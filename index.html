@@ -74,13 +74,14 @@ body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-i
 .seg button.on{ background:var(--card); color:var(--ink); font-weight:600; box-shadow:0 1px 2px rgba(28,24,56,.12); }
 .page{ padding:26px 30px 70px; max-width:1640px; }
 /* headline */
-.headline{ margin:0 0 18px; font-size:25px; line-height:1.3; font-weight:700; letter-spacing:-.015em; max-width:1000px; }
+.headline{ margin:0 0 6px; font-size:25px; line-height:1.3; font-weight:700; letter-spacing:-.015em; }
+.takeaway{ margin:0 0 18px; font-size:16px; color:var(--ink); }
 .dek{ color:var(--mute); font-size:15px; margin:0 0 22px; max-width:900px; }
 .lens-note{ margin:0 0 18px; color:var(--ink); font-size:13.5px; background:var(--sky); border-radius:8px; padding:10px 14px; max-width:1100px; }
 .lens-note button{ margin-left:8px; border:1px solid var(--accent); color:var(--accent-ink); background:transparent; border-radius:6px; padding:2px 10px; font-size:12.5px; font-weight:600; }
 /* stat band (annual report style: number, caption, vertical rule) */
 .stats{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 6px; margin-bottom:22px; }
-.stat{ border-left:1.5px solid var(--line); padding:2px 16px 0; text-align:left; background:none; border-top:0; border-right:0; border-bottom:0; position:relative; min-width:0; }
+.stat{ border-left:1.5px solid var(--line); padding:2px 16px 0; text-align:left; background:none; border-top:0; border-right:0; border-bottom:0; position:relative; min-width:0; display:flex; flex-direction:column; }
 .stat:first-child{ border-left:0; }
 .stat:hover .sv{ color:var(--accent-ink); }
 .stat .sl{ color:var(--mute); font-size:13px; font-weight:500; }
@@ -89,7 +90,8 @@ body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-i
 .stat .sc{ font-size:12.5px; color:var(--mute); }
 .stat .sd{ font-size:12.5px; font-weight:600; }
 .stat.na .sv{ color:var(--flat); font-size:14px; font-weight:500; margin-top:8px; }
-.stat svg{ position:absolute; right:14px; top:4px; width:58px; height:22px; }
+.stat .sc{ margin-bottom:10px; }
+.stat .spk{ margin-top:auto; padding-top:8px; width:100%; border-top:1px dashed var(--line); } .stat .spk svg{ display:block; width:100%; height:22px; }
 .bad-t{ color:var(--bad); } .good-t{ color:var(--good); } .flat-t{ color:var(--mute); }
 /* tabs */
 .tabrow{ display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:12px; justify-content:space-between; }
@@ -116,7 +118,7 @@ body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-i
 .node::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--flat); }
 .node.bad::before{ background:var(--bad); } .node.good::before{ background:var(--good); }
 .node:hover{ border-color:var(--accent); box-shadow:0 2px 10px rgba(29,35,64,.10); }
-.node.sel{ box-shadow:0 0 0 2px var(--accent); }
+.node.picked{ box-shadow:0 0 0 3px var(--orange); }
 .node.ref{ border-style:dashed; background:var(--grey-card); }
 .node .n{ font-size:12.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding-right:16px; }
 .node .val{ font-size:21px; font-weight:700; letter-spacing:-.015em; margin-top:1px; }
@@ -200,9 +202,9 @@ table.t tr.total td{ font-weight:700; border-top:1px solid var(--line); }
 /* overview */
 .hero{ background:var(--card); border:1px solid var(--line); border-top:4px solid var(--orange); border-radius:14px; padding:28px 30px 26px; margin-bottom:22px; position:relative; overflow:hidden; }
 .hero .when{ font-size:13.5px; color:var(--mute); font-weight:600; margin-bottom:6px; }
-.hero h2{ font-size:30px; line-height:1.25; margin:0 0 10px; font-weight:700; letter-spacing:-.02em; max-width:880px; }
-.hero p{ font-size:16px; margin:0; max-width:820px; }
-.hero-stats{ display:flex; gap:0; margin-top:22px; flex-wrap:wrap; }
+.hero h2{ font-size:30px; line-height:1.25; margin:0 0 10px; font-weight:700; letter-spacing:-.02em; }
+.hero p{ font-size:16px; margin:0; }
+.hero-stats{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; margin-top:22px; }
 .hero-stats div{ border-left:2px solid var(--orange); padding:0 26px 0 14px; margin-bottom:8px; }
 .hero-stats b{ display:block; font-size:28px; font-weight:700; letter-spacing:-.02em; }
 .hero-stats span{ font-size:13px; color:var(--ink); }
@@ -221,12 +223,14 @@ table.t tr.total td{ font-weight:700; border-top:1px solid var(--line); }
 .eq .t b{ display:block; font-size:21px; } .eq .t span{ font-size:12.5px; color:var(--mute); }
 .eq .o{ align-self:center; font-size:20px; color:var(--mute); font-weight:700; }
 .levers3{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; }
-.levers3 > div{ padding:0 20px; border-left:1.5px solid var(--line); }
+.levers3 > div{ padding:0 20px; border-left:1.5px solid var(--line); display:flex; flex-direction:column; }
 .levers3 > div:first-child{ border-left:0; padding-left:0; }
 .levers3 h4{ font-size:15.5px; margin:0 0 4px; }
 .levers3 .big{ font-size:26px; font-weight:700; letter-spacing:-.02em; margin:6px 0 2px; }
-.levers3 p{ font-size:13.5px; margin:0 0 10px; color:var(--ink); }
-.levers3 .m{ color:var(--mute); font-size:12.5px; }
+.levers3 p{ font-size:13.5px; margin:0 0 8px; color:var(--ink); }
+.levers3 .m{ color:var(--mute); font-size:12.5px; margin-top:auto; min-height:3em; }
+.lv-links{ display:flex; gap:16px; margin:10px 0 0 !important; }
+.plist{ margin:0; padding-left:18px; font-size:14px; } .plist li{ margin-bottom:4px; }
 .linkb{ border:0; background:none; color:var(--accent-ink); font-weight:600; padding:0; text-decoration:underline; text-underline-offset:3px; font-size:13.5px; }
 .gloss{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 30px; }
 .gloss div{ font-size:13.5px; } .gloss b{ display:block; font-size:14px; }
@@ -322,6 +326,7 @@ table.t tr.total td{ font-weight:700; border-top:1px solid var(--line); }
 @media (max-width:860px){ .form,.cks{ grid-template-columns:1fr; } }
 @media (max-width:1250px){ .stats{ grid-template-columns:repeat(3,minmax(0,1fr)); row-gap:16px; } .stat:nth-child(4){ border-left:0; } .lower,.al-grid,.sc-grid{ grid-template-columns:1fr; } .al-detail{ position:static; } .ov-sec{ grid-template-columns:1fr; gap:10px; } }
 @media (max-width:860px){
+  .hero-stats{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .app{ grid-template-columns:1fr; }
   .side{ position:static; height:auto; flex-direction:row; align-items:center; padding:10px 12px; overflow-x:auto; gap:8px; }
   .brand{ padding:0 8px 0 4px; } .brand span{ display:none; } .brand img{ width:120px !important; }
@@ -517,7 +522,7 @@ function aggregate(L,t,ver,sc){
     Object.assign(S,{popex:opex,bad,noi:S.rev-opex-bad,capex,opA,cwip,planYTD:plan,delYTD:del,lateA:late,rentLost:lost,daysLate: late? dlw/late:0, yoc: opA? (S.rev-opex-bad)*12/opA:null}); }
   if(lv.co){ const c=D.co[ver][t]; let fin=c.fin; if(sc&&sc.rate&&ver==='actual') fin = c.fin*(1+sc.rate/820);
     S.oi=c.oi; S.emp=c.emp; S.oexp=c.oexp; S.ovh=c.emp+c.oexp; S.ebitda=S.noi+S.oi-S.ovh; S.da=c.da; S.fin=fin;
-    S.pbt=S.ebitda-S.da-S.fin; S.tax=0.35+Math.max(0,S.pbt)*.12; S.pat=S.pbt-S.tax; S.margin=S.rev? S.ebitda/S.rev:null;
+    S.pbt=S.ebitda-S.da-S.fin; S.tax=0.35+Math.max(0,S.pbt)*.12; S.pat=S.pbt-S.tax; S.margin=(S.rev+S.oi)? S.ebitda/(S.rev+S.oi):null;
     S.dd=c.dd; const prevC = t>0? (D.co[ver][t-1]||D.co.actual[t-1]) : c;
     const prevRev = t>0? aggSimpleRev(t-1,ver):S.rev;
     S.wc = c.dd/30*S.rev; S.wcPrev = prevC.dd/30*prevRev; S.wcChg=S.wc-S.wcPrev;
@@ -571,7 +576,8 @@ function vals(L,t,ver,sc){ if(t<0) return null; const key=JSON.stringify([L,t,ve
     S.pm_maint=S.popex*SH.pm.maint; S.pm_util=S.popex*SH.pm.util; S.pm_ptax=S.popex*SH.pm.ptax; S.pm_ins=S.popex*SH.pm.ins; S.pm_sub=S.popex*SH.pm.sub; }
   if(S){ S.maint=S.svc*SH.svc.maint; S.ooi=S.svc*SH.svc.ooi;
     if(t>=12){ const Y=aggregate(L,t-12,'actual'); if(Y&&Y.rent){ S.rentLY=Y.rent; S.rentEsc=Y.rent*0.0475; S.rentMix=S.rent-S.rentLY-S.rentEsc; } } }
-  if(S && S.valid.co){ for(const k in SH.ox) S['ox_'+k]=S.oexp*SH.ox[k]; }
+  if(S && S.valid.park){ S.gm=S.rev-S.popex; }
+  if(S && S.valid.co){ for(const k in SH.ox) S['ox_'+k]=S.oexp*SH.ox[k]; S.ti=S.gm+S.oi; }
   cache.set(key,S); return S; }
 function cmpOf(L,t,mode,sc){ mode=mode||state.cmp; if(mode==='budget') return vals(L,t,'budget'); if(mode==='ly') return t>=12? vals(L,t-12,'actual'):null; return t>=1? vals(L,t-1,'actual'):null; }
 const CMP_L={budget:'Plan',ly:'Last year',lm:'Last month'};
@@ -581,6 +587,8 @@ function cmpLabel(){ return state.treeSc? 'Base' : CMP_L[state.cmp]; }
 
 // ---------- node dictionary ----------
 const N={
+ gm:{l:'Gross margin',u:'cr',g:'park',dir:1,v:S=>S.gm,f:'Revenue − park running costs',o:'Head, Asset management',s:'Park accounts'},
+ ti:{l:'Total income',u:'cr',g:'co',dir:1,v:S=>S.ti,f:'Gross margin + interest and other income',o:'CFO',s:'Monthly accounts'},
  maint:{l:'Maintenance services',u:'cr',g:'row',dir:1,v:S=>S.maint,f:'Service charges × FY26 share (₹24.5 cr of ₹45.2 cr)',o:'Head, Facility services',s:'Billing system; FY26 mix from annual report note 28'},
  ooi:{l:'Other operating income',u:'cr',g:'row',dir:1,v:S=>S.ooi,f:'Service charges × FY26 share (₹20.6 cr of ₹45.2 cr)',o:'CFO',s:'Billing system; FY26 mix from annual report note 28'},
  rentLY:{l:'Rent a year ago',u:'psf',g:'row',dir:1,v:S=>S.rentLY,f:'Rent per sq ft in the same month last year',o:'Head, Leasing',s:'Lease register'},
@@ -658,7 +666,7 @@ function nd(id){ const n=N[id]; if(n&&n.ref){ return {...N[n.ref],...n,id,refId:
 
 const TREES={
  pat:{title:'Profit tree',sub:'',roots:[{id:'pat',label:'Net profit'}],
-   ch:{pat:[['pbt','+'],['tax','−']],pbt:[['ebitda','+'],['da','−'],['fin','−']],ebitda:[['noi','+'],['oi','+'],['ovh','−']],ovh:[['emp','+'],['oexp','+']],noi:[['rev','+'],['popex','−'],['bad','−']],popex:[['pm_maint','+'],['pm_util','+'],['pm_ptax','+'],['pm_ins','+'],['pm_sub','+']],rent:[['rentLY','+'],['rentEsc','+'],['rentMix','+']],oexp:[['ox_legal','+'],['ox_rates','+'],['ox_travel','+'],['ox_promo','+'],['ox_it','+'],['ox_other','+']],rev:[['rental','+'],['maint','+'],['ooi','+']],rental:[['billed','×'],['rent','×'],['real','×']],billed:[['leased','+'],['np','−']],leased:[['comp','×'],['occ','×']],comp:[['compPlan','+'],['late','−']]}},
+   ch:{pat:[['pbt','+'],['tax','−']],pbt:[['ebitda','+'],['da','−'],['fin','−']],ebitda:[['ti','+'],['bad','−'],['ovh','−']],ti:[['gm','+'],['oi','+']],gm:[['rev','+'],['popex','−']],ovh:[['emp','+'],['oexp','+']],popex:[['pm_maint','+'],['pm_util','+'],['pm_ptax','+'],['pm_ins','+'],['pm_sub','+']],rent:[['rentLY','+'],['rentEsc','+'],['rentMix','+']],oexp:[['ox_legal','+'],['ox_rates','+'],['ox_travel','+'],['ox_promo','+'],['ox_it','+'],['ox_other','+']],rev:[['rental','+'],['maint','+'],['ooi','+']],rental:[['billed','×'],['rent','×'],['real','×']],billed:[['leased','+'],['np','−']],leased:[['comp','×'],['occ','×']],comp:[['compPlan','+'],['late','−']]}},
  cash:{title:'Cash tree',sub:'',roots:[{id:'fcf',label:'Free cash flow'},{id:'netDebt',label:'Net debt'}],
    ch:{fcf:[['cfo','+'],['capex','−'],['c_int','−']],cfo:[['c_ebitda','+'],['c_tax','−'],['wcChg','−']],wcChg:[['dd','']]}},
 };
@@ -676,9 +684,7 @@ function delta(u,a,b,dir){ if(a==null||b==null||!isFinite(a)||!isFinite(b)) retu
   if(u==='pct'){ txt=(d>=0?'+':MINUS)+num(Math.abs(d*100),1)+' pts'; }
   else { const dp = u==='msf'||u==='x'||u==='rs'? 2 : (u==='days'||u==='crn'?0:1); const zr=Math.abs(d)<0.5*Math.pow(10,-dp); const abs=zr? num(0,dp) : (d>=0?'+':MINUS)+num(Math.abs(d),dp).replace(MINUS,'');
     let pc=''; if(!(Math.abs(b)<1e-9 || (a<0)!==(b<0) || b<0)) pc=(d>=0?'+':MINUS)+num(Math.abs(d/b*100),1)+'%'; txt=pc? abs+' '+pc : abs; }
-  const rel = u==='pct'? Math.abs(d)/0.1 : Math.abs(d)/Math.max(Math.abs(b),1e-9);
-  const flatLim = u==='pct'? 0.003/0.1 : 0.03;
-  const cls = rel<flatLim? 'flat' : (d*dir>0?'good':'bad');
+  const cls = (u==='pct'? Math.abs(d)<0.0005 : txt.startsWith(num(0,0).charAt(0)) && /^[0.,]+$/.test(txt.split(' ')[0])) ? 'flat' : (d*dir>0?'good':'bad');
   return {txt,cls,d}; }
 
 // ---------- filters ----------
@@ -720,16 +726,16 @@ function lensNote(){ const lv=lensLevel(state.L); const t=lensText(); if(!t) ret
   return `<div class="lens-note">Filtered to <b>${esc(t)}</b>. ${known}<button id="clrLens">Clear filters</button></div>`; }
 // ---------- KPI strip ----------
 function spark(fn){ const pts=[]; for(let i=Math.max(0,state.t-11);i<=state.t;i++){ const S=vals(state.L,i,'actual'); const v=S?fn(S):null; if(v!=null&&isFinite(v)) pts.push(v); }
-  if(pts.length<2) return ''; const mn=Math.min(...pts),mx=Math.max(...pts),r=mx-mn||1; const w=86,h=30;
+  if(pts.length<2) return ''; const mn=Math.min(...pts),mx=Math.max(...pts),r=mx-mn||1; const w=160,h=20;
   const d=pts.map((v,i)=>`${(i/(pts.length-1)*w).toFixed(1)},${(h-(v-mn)/r*h+2).toFixed(1)}`).join(' ');
   const last=d.split(' ').pop().split(',');
-  return `<svg viewBox="0 0 ${w} ${h+4}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="var(--g1)" stroke-width="1.6"/><circle cx="${last[0]}" cy="${last[1]}" r="2.6" fill="var(--g2)"/></svg>`; }
+  return `<svg viewBox="0 0 ${w} ${h+4}" preserveAspectRatio="none" aria-hidden="true"><title>Last 12 months</title><polyline points="${d}" fill="none" stroke="var(--g1)" stroke-width="1.6"/><circle cx="${last[0]}" cy="${last[1]}" r="2.6" fill="var(--g2)"/></svg>`; }
 function renderKPIs(){ const S=curS(), C=cmpS(); const lv=S.valid;
   const K=[['rev','Revenue',S=>S.rev,'row','cr',1,'Rent and service charges billed'],['ebitda','EBITDA margin',S=>S.margin,'co','pct',1,'Share of revenue kept before interest and depreciation'],['pat','Net profit',S=>S.pat,'co','cr',1,'After interest, depreciation and tax'],['occ','Occupancy',S=>S.occ,'row','pct',1,'Finished space with a signed lease'],['rent','Rent per sq ft',S=>S.rent,'row','psf',1,'Average monthly rent on space paying'],['real','Rent billed vs owed',S=>S.real,'row','pct',1,'Rent billed as a share of what leases say']];
   return `<div class="stats">${K.map(([id,l,fn,g,u,dir,cap])=>{ const ok = g==='row'||lv.co;
     if(!ok) return `<div class="stat na"><div class="sl">${l}</div><div class="sv">Whole company only</div><div class="sc">Clear the filters to see it</div></div>`;
     const a=fn(S), b=C?fn(C):null; const dl=delta(u,a,b,dir); const x=fv(u,a);
-    return `<button class="stat" data-node="${id}" title="${esc(cap)}"><div class="sl">${l}</div><div class="sv">${x.m}${x.s&&u!=='pct'&&u!=='psf'?`<small>${x.s}</small>`:''}</div><div class="sc">${cmpLabel()} ${b!=null?fv(u,b).m:'–'} <span class="sd ${dl.cls}-t">${dl.txt.split(' ')[0]||''}</span></div>${spark(fn)}</button>`; }).join('')}</div>`; }
+    return `<button class="stat" data-node="${id}" title="${esc(cap)}"><div class="sl">${l}</div><div class="sv">${x.m}${x.s&&u!=='pct'&&u!=='psf'?`<small>${x.s}</small>`:''}</div><div class="sc">${cmpLabel()} ${b!=null?fv(u,b).m:'–'} <span class="sd ${dl.cls}-t">${dl.txt.split(' ')[0]||''}</span></div><div class="spk">${spark(fn)}</div></button>`; }).join('')}</div>`; }
 // ---------- tree layout & render ----------
 const W=196,H=94,CG=46,RG=14;
 function countDesc(def,id){ const c=def.ch[id]||[]; return c.reduce((a,[k])=>a+1+countDesc(def,k),0); }
@@ -743,13 +749,13 @@ function layoutTree(def){ const nodes=[], edges=[], labels=[]; let y=0; let maxD
   return {nodes,edges,labels,w:(maxD+1)*(W+CG)-CG+40,h:y}; }
 function nodeHTML(n,S,C){ const meta=nd(n.id); const lv=S.valid; const g=meta.g;
   const valid = g==='row' || (g==='park'&&lv.park) || (g==='co'&&lv.co);
-  const sel = state.sel===n.id? ' sel':'';
+  const sel = state.sel===n.id? ' picked':'';
   const style=`left:${n.x}px;top:${n.y}px`;
   if(!valid){ const why = g==='co'? 'Only known for Horizon as a whole' : 'Only known park by park';
     return `<div class="node off" style="${style}" title="${esc(why)}"><div class="n">${esc(meta.l)}</div><div class="val">${why}</div></div>`; }
   const a=meta.v(S), b=C?meta.v(C):null; const dl=delta(meta.u,a,b,meta.dir); const x=fv(meta.u,a);
   const alt=''; const ref=meta.isRef?' ref':'';
-  return `<button class="node ${dl.cls}${alt}${ref}${sel}" style="${style}" data-node="${meta.isRef?meta.refId:n.id}" aria-label="${esc(meta.l)}">${meta.isRef?'<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M10 14l6-6M11 8h5v5"/></svg>':''}<div class="n">${esc(meta.l)}</div><div class="val">${x.m}${x.s?`<small>${x.s}</small>`:''}</div><div class="ft"><span>${cmpLabel()} ${b!=null?fv(meta.u,b).m:'–'}</span>${dl.txt?`<span class="dchip ${dl.cls}">${dl.txt}</span>`:''}</div></button>`; }
+  return `<button class="node ${dl.cls}${alt}${ref}${sel}" style="${style}" data-node="${meta.isRef?meta.refId:n.id}" aria-label="${esc(meta.l)}">${meta.isRef?'<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M10 14l6-6M11 8h5v5"/></svg>':''}<div class="n">${esc(meta.l)}</div><div class="val">${x.m}${x.s?`<small>${x.s}</small>`:''}</div><div class="ft"><span>${cmpLabel()} ${b!=null?fv(meta.u,b).m:'–'}</span>${dl.txt?`<span class="dchip ${dl.cls}">${dl.txt.split(' ')[0]}</span>`:''}</div></button>`; }
 function treePanel(key){ const def=TREES[key]; const L=layoutTree(def); const S=curS(), C=cmpS();
   let svg='', ops='', togs='', notes='';
   for(const [p,c] of L.edges){ const sx=p.x+W+CG/2, py=p.y+H/2, cy=c.y+H/2;
@@ -794,9 +800,9 @@ function bridge(L,t,mode,sc){ // returns steps from comparison to actual
   let metric='revenue', a=SA.rev, b=SB.rev;
   if(lv.park){ const by={}; for(const p of PARKS){ if(!parkMatch(p.k,L)) continue; by[p.k]=-(D.park.actual[A.t][p.k].opex-(D.park[B.ver][B.t][p.k].opex)); }
     out.push({k:'popex',l:'Park running costs',v:-(SA.popex-SB.popex),by});
-    const byb={}; for(const p of PARKS){ if(!parkMatch(p.k,L)) continue; byb[p.k]=-(D.park.actual[A.t][p.k].bad-D.park[B.ver][B.t][p.k].bad); }
-    out.push({k:'bad',l:'Bad debt',v:-(SA.bad-SB.bad),by:byb}); metric='park profit'; a=SA.noi; b=SB.noi; }
-  if(lv.co){ out.push({k:'oi',l:'Interest and other income',v:SA.oi-SB.oi,by:{}}); out.push({k:'ovh',l:'Head office costs',v:-(SA.ovh-SB.ovh),by:{}}); metric='EBITDA'; a=SA.ebitda; b=SB.ebitda; }
+    metric='gross margin'; a=SA.gm; b=SB.gm; }
+  if(lv.co){ const byb={}; for(const p of PARKS){ byb[p.k]=-(D.park.actual[A.t][p.k].bad-D.park[B.ver][B.t][p.k].bad); }
+    out.push({k:'oi',l:'Interest and other income',v:SA.oi-SB.oi,by:{}}); out.push({k:'bad',l:'Bad debt',v:-(SA.bad-SB.bad),by:byb}); out.push({k:'ovh',l:'Head office costs',v:-(SA.ovh-SB.ovh),by:{}}); metric='EBITDA'; a=SA.ebitda; b=SB.ebitda; }
   return {metric,a,b,steps:out}; }
 const PHR={area:['buildings finishing late','more finished space'],occ:['a smaller share of space leased','more of the space leased'],lag:['signed space where rent has not started','rent starting sooner on signed space'],rent:['lower rent per sq ft','higher rent per sq ft'],bill:['rent owed under the leases but not billed','more of the rent owed billed'],svc:['lower service charges','higher service charges'],popex:['higher park running costs','lower park running costs'],bad:['more bad debt written off','less bad debt'],oi:['less interest income','more interest income'],ovh:['higher head office costs','lower head office costs']};
 function cap1(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
@@ -805,7 +811,7 @@ function bridgeSummary(br,lbl){ if(!br) return ''; const gap=br.a-br.b; const M=
   if(Math.abs(gap)<0.05) return `${M} was in line with ${lbl.toLowerCase()}.`;
   const parts=main.map(s=>`${PHR[s.k][s.v<0?0:1]} (${s.v<0?MINUS:'+'}${rs(Math.abs(s.v),1)})`);
   const list=parts.length>1? parts.slice(0,-1).join('; ')+'; and '+parts[parts.length-1] : parts[0]||'';
-  return `${M} was ${rs(Math.abs(gap),1)} cr ${dir} ${lbl.toLowerCase()}. The biggest reasons: ${list}.`; }
+  const LB=/^[A-Z][a-z]{2} \d{4}$/.test(lbl)?lbl:lbl.toLowerCase(); return `${M} was ${rs(Math.abs(gap),1)} cr ${dir} ${LB}. The biggest reasons: ${list}.`; }
 function bridgeBox(){ const L=state.L; const br=bridge(L,state.t,state.cmp,state.treeSc); const lbl=cmpLabel();
   if(!br) return `<div class="box"><h3>Bridge</h3><div class="empty">No ${lbl.toLowerCase()} figures for this month.</div></div>`;
   const pts=[br.b]; let run=br.b; br.steps.forEach(s=>{ run+=s.v; pts.push(run); }); pts.push(br.a);
@@ -887,7 +893,7 @@ function openNode(id){ state.sel=id; const meta=nd(id); const S=curS(), C=cmpS()
   let h='';
   if(!valid){ h+=`<p class="read">Not held at this level for <b>${esc(lensText())}</b>. ${meta.g==='co'?'Company-level only.':'Held by park only.'}</p>`; }
   else { const a=meta.v(S), b=C?meta.v(C):null; const dl=delta(meta.u,a,b,meta.dir);
-    h+=`<div class="bigv">${fvs(meta.u,a)}</div><div style="color:var(--mute);margin:2px 0 4px">${cmpLabel()} ${b!=null?fvs(meta.u,b):'not available'} ${dl.txt?`<span class="dchip ${dl.cls}">${dl.txt}</span>`:''}</div>`;
+    h+=`<div class="bigv">${fvs(meta.u,a)}</div><div style="color:var(--mute);margin:2px 0 4px">${cmpLabel()} ${b!=null?fvs(meta.u,b):'not available'} ${dl.txt?dl.txt.split(' ').map(x=>`<span class="dchip ${dl.cls}" style="margin-left:6px">${x}</span>`).join(''):''}</div>`;
     h+=`<div class="read" style="margin-top:12px">${readFor(id,meta,S,C)}</div>`; }
   h+=`<dl class="dl" style="margin-top:16px"><dt>Formula</dt><dd>${esc(meta.f)}</dd><dt>Owner</dt><dd>${esc(meta.o)}</dd><dt>Source</dt><dd>${esc(meta.s)}</dd></dl>`;
   if(valid){ h+=`<div class="h4">Last 12 months</div>${trendSVG(meta)}`; }
@@ -902,8 +908,8 @@ function openNode(id){ state.sel=id; const meta=nd(id); const S=curS(), C=cmpS()
   $('#dBody').innerHTML=h; $('#drawer').classList.add('open'); $('#scrim').classList.add('on');
   $('#dBody').querySelectorAll('[data-sd]').forEach(b=>b.onclick=()=>{ splitDim=b.dataset.sd; openNode(id); });
   $('#dBody').querySelectorAll('[data-lk]').forEach(tr=>tr.onclick=()=>{ const k=tr.dataset.lk; state.L[splitDim]=k; if(splitDim==='park') state.L.region=PARK_BY[k].r; closeDrawer(); state.view='tree'; renderAll(); });
-  document.querySelectorAll('.node.sel').forEach(n=>n.classList.remove('sel')); document.querySelectorAll(`.node[data-node="${id}"]`).forEach(n=>n.classList.add('sel')); }
-function closeDrawer(){ $('#drawer').classList.remove('open'); $('#scrim').classList.remove('on'); state.sel=null; document.querySelectorAll('.node.sel').forEach(n=>n.classList.remove('sel')); }
+  document.querySelectorAll('.node.picked').forEach(n=>n.classList.remove('picked')); document.querySelectorAll(`.node[data-node="${id}"]`).forEach(n=>n.classList.add('picked')); }
+function closeDrawer(){ $('#drawer').classList.remove('open'); $('#scrim').classList.remove('on'); state.sel=null; document.querySelectorAll('.node.picked').forEach(n=>n.classList.remove('picked')); }
 function readFor(id,meta,S,C){ if(!C) return 'No comparison figures for this month.';
   const a=meta.v(S), b=meta.v(C); const dl=delta(meta.u,a,b,meta.dir); const word = dl.cls==='flat'? 'In line with' : (dl.cls==='good'?'Better than':'Worse than');
   let s=`<b>${word} ${cmpLabel().toLowerCase()}</b>: ${fvs(meta.u,a)} against ${fvs(meta.u,b)}${meta.u==='pct'&&Math.abs(a-b)>=0.0005?`, ${num(Math.abs(a-b)*100,1)} percentage points ${a>b?'higher':'lower'}`:''}. `;
@@ -920,19 +926,29 @@ function readFor(id,meta,S,C){ if(!C) return 'No comparison figures for this mon
 
 // ---------- views ----------
 function story(){ const t=state.t, m=MONTHS[t].label; const S=vals({},t,'actual'); const C=cmpOf({},t); const lbl=CMP_L[state.cmp].toLowerCase();
-  const pat=S.pat; const verb = pat<0? `made a net loss of ${rs(-pat,1)} cr` : `made a net profit of ${rs(pat,1)} cr`;
-  let h=`In ${m}, Horizon earned ${rs(S.rev,1)} cr of revenue and ${verb}.`;
-  if(C){ const cp=C.pat; const what = state.cmp==='budget'? `The plan expected ${cp<0?'a loss of '+rs(-cp,1)+' cr':'a profit of '+rs(cp,1)+' cr'}.` : `${CMP_L[state.cmp]} it was ${cp<0?'a loss of '+rs(-cp,1)+' cr':'a profit of '+rs(cp,1)+' cr'}.`; h+=' '+what; }
-  const br=bridge({},t,state.cmp); const d= br? bridgeSummary(br, state.cmp==='budget'?'plan':lbl)+' Interest and depreciation, the costs of having built the parks, take most of what is left.' : '';
-  return {h,d}; }
+  const pat=S.pat; const npRent=S.np*S.rent/10;
+  let h;
+  if(pat<0 && npRent> -pat) h=`Horizon is ${rs(-pat,1)} cr a month from profit, and ${rs(npRent,1)} cr of rent a month is already signed but not yet billed.`;
+  else if(pat<0) h=`Horizon lost ${rs(-pat,1)} cr in ${m}; starting rent on ${num(S.np,2)}M sq ft of signed space is the fastest way to close it.`;
+  else h=`Horizon made ${rs(pat,1)} cr in ${m}, with ${rs(npRent,1)} cr of signed rent a month still to start.`;
+  const br=bridge({},t,state.cmp); const d='';
+  let k=''; if(C){ const dP=S.pat-C.pat, dE=S.ebitda-C.ebitda, dF=-(S.fin-C.fin), dD=-(S.da-C.da);
+    const top=br? br.steps.filter(s=>Math.sign(s.v)===Math.sign(dE)).sort((a,b)=>Math.abs(b.v)-Math.abs(a.v))[0] : null;
+    const ref = state.cmp==='budget'? 'the illustrative plan' : state.cmp==='ly'? MONTHS[t-12].label : MONTHS[t-1].label;
+    const parts=[`EBITDA ${dE>=0?'rose':'fell'} ${rs(Math.abs(dE),1)} cr${top?`, mainly from ${PHR[top.k][top.v<0?0:1]}`:''}`];
+    if(Math.abs(dF)>=0.1) parts.push(`interest was ${rs(Math.abs(dF),1)} cr ${dF>=0?'lower':'higher'}`);
+    if(Math.abs(dD)>=0.1) parts.push(`depreciation was ${rs(Math.abs(dD),1)} cr ${dD>=0?'lower':'higher'}`);
+    const list=parts.length>1? parts.slice(0,-1).join(', ')+' and '+parts[parts.length-1] : parts[0];
+    k=`Against ${ref}, the bottom line is ${rs(Math.abs(dP),1)} cr ${dP>=0?'better':'worse'}: ${list}.`; }
+  return {h,d,k}; }
 function viewTree(){ const tab=TABS[state.tab];
   let h=lensNote();
   if(state.treeSc) h+=`<div class="lens-note" style="background:var(--accent-soft)">Scenario: <b>${esc(state.presetName||'New scenario')}</b>, compared with actual. <button id="clrSc">Back to actuals</button></div>`;
-  const st=story(); h=`<h2 class="headline">${st.h}</h2>`+h;
+  const st=story(); h=`<h2 class="headline">${st.h}</h2>${st.k?`<p class="takeaway">${st.k}</p>`:''}`+h;
   if(state.cmp==='budget') h+=`<div class="lens-note">Plan figures are illustrative, set for the demo. Horizon’s own FY27 plan would replace them.</div>`;
   h+=renderKPIs();
   h+=`<div class="tabrow"><div class="tabs">${Object.entries(TABS).map(([k,t])=>`<button data-tab="${k}" class="${state.tab===k?'on':''}">${t.l}</button>`).join('')}</div>
-   <div class="legend"><span><i style="background:var(--good)"></i>Better</span><span><i style="background:var(--bad)"></i>Worse</span><span><i style="background:var(--flat)"></i>Within 3%</span></div></div>`;
+   <div class="legend"><span><i style="background:var(--good)"></i>Better</span><span><i style="background:var(--bad)"></i>Worse</span></div></div>`;
   h+= state.tab==='inv'? invTable() : `<div class="panels">${tab.trees.map(treePanel).join('')}</div>`;
   if(state.tab==='pat'){ const al=alertsFor(state.t).filter(a=>!a.closed).slice(0,5);
     h+=`<div class="lower">${bridgeBox()}<div class="box"><div class="box-h"><div><h3>Things that need attention</h3><div class="sub">Checked against the illustrative plan for ${MONTHS[state.t].label}</div></div><button class="btn" id="allAl">All alerts</button></div>${al.map(a=>`<div class="alert-li" data-al="${a.id}"><span class="dot ${a.status==='ack'?'amber':''}"></span><div><div class="tt">${esc(a.title)}</div><div class="tags"><span class="tag">${a.id}</span>${stTag(a)}</div></div>${impHTML(a)}</div>`).join('')}</div></div>`; }
@@ -997,7 +1013,7 @@ function scObj(){ const s={}; for(const [k,v] of Object.entries(state.sc)) if(v)
 function viewSc(){ const sc=scObj(); const t=state.t; const B=vals({},t,'actual'), X=vals({},t,'actual',sc)||B;
   const card=(l,a,b,u,dir,extra)=>{ const dl=delta(u,a,b,dir); return `<div class="res"><div class="t">${l}</div><div class="v">${fvs(u,a)}</div><div class="d ${dl.cls}-t">${sc?(dl.txt||'no change')+' vs actual':'Actual '+fvs(u,b)}</div>${extra?`<div style="color:var(--mute);font-size:12.5px">${extra}</div>`:''}</div>`; };
   const dE=(X.ebitda-B.ebitda);
-  const rows=[['rev','Revenue'],['billed','Space paying rent'],['rent','Rent per sq ft'],['real','Rent billed vs owed'],['noi','Park profit (NOI)'],['ebitda','EBITDA'],['pat','Net profit'],['fcf','Free cash flow'],['icov','Interest cover']];
+  const rows=[['rev','Revenue'],['billed','Space paying rent'],['rent','Rent per sq ft'],['real','Rent billed vs owed'],['gm','Gross margin'],['ebitda','EBITDA'],['pat','Net profit'],['fcf','Free cash flow'],['icov','Interest cover']];
   const preset=PRESETS.find(p=>p.k===state.preset); const saved=STORE.scen.find(s=>s.id===state.preset);
   const title= preset? preset.l : saved? saved.name : sc? 'New scenario' : 'New scenario';
   const lib=PRESETS.map(p=>`<button class="preset ${state.preset===p.k?'on':''}" data-ps="${p.k}"><span class="rd"></span><b>${p.l}</b><span>${p.d}</span><em>${p.deck}</em></button>`).join('')
@@ -1073,8 +1089,8 @@ function renderReport(r){ const t=state.t, S=vals({},t,'actual'), B=vals({},t,'b
      <p style="margin-top:14px">Occupancy ${num(S.occ*100,1)}%. Rent ${rs(S.rent,1)} per sq ft a month. ${num(S.real*100,1)}% of rent owed was billed. Net debt ${rs(S.netDebt,0)} cr, and EBITDA covers interest ${num(S.icov,2)} times.</p>`; }
   else if(r.r==='pl'){ const ids=['rev','rental','svc','popex','noi','oi','ovh','ebitda','da','fin','pbt','tax','pat'];
     body=tableHTML(['₹ crore','Actual','Plan','vs plan','Last year','vs last year'],ids.map(id=>{ const m=N[id]; return [m.l,num(m.v(S),1),num(m.v(B),1),d(m.u,m.v(S),m.v(B),m.dir),LY?num(m.v(LY),1):'–',LY?d(m.u,m.v(S),m.v(LY),m.dir):'–']; })); }
-  else if(r.r==='park'){ const rows=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'), b=vals({park:p.k},t,'budget'); return [p.l,num(a.rev,2),num(a.popex,2),num(a.noi,2),num(b.noi,2),d('cr',a.noi,b.noi,1),num(a.yoc*100,1)+'%']; });
-    body=tableHTML(['Park','Revenue','Running costs','Park profit','Plan','Change','Yield on cost'],rows,['Total',num(S.rev,2),num(S.popex,2),num(S.noi,2),num(B.noi,2),d('cr',S.noi,B.noi,1),num(S.yoc*100,1)+'%']); }
+  else if(r.r==='park'){ const rows=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'), b=vals({park:p.k},t,'budget'); return [p.l,num(a.rev,2),num(a.popex,2),num(a.gm,2),num(b.gm,2),d('cr',a.gm,b.gm,1),num(a.yoc*100,1)+'%']; });
+    body=tableHTML(['Park','Revenue','Running costs','Gross margin','Plan','Change','Yield on cost'],rows,['Total',num(S.rev,2),num(S.popex,2),num(S.gm,2),num(B.gm,2),d('cr',S.gm,B.gm,1),num(S.yoc*100,1)+'%']); }
   else if(r.r==='bridge'){ const br=bridge({},t,'budget'); body=tableHTML(['Reason','Effect, ₹ cr','Parks it came from'],br.steps.map(s=>[s.l,`${s.v>=0?'+':MINUS}${num(Math.abs(s.v),2)}`,Object.entries(s.by).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,3).map(([p,v])=>`${PARK_L[p]} ${v>=0?'+':MINUS}${num(Math.abs(v),2)}`).join(', ')||'Company level']),['Plan to actual',`${br.a-br.b>=0?'+':MINUS}${num(Math.abs(br.a-br.b),2)}`,`${num(br.b,2)} to ${num(br.a,2)}`]); }
   else if(r.r==='bill'){ const rows=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'); return {p,a}; }).sort((x,y)=>(y.a.owed-y.a.rental)-(x.a.owed-x.a.rental));
     body=tableHTML(['Park','Rent owed','Rent billed','Not billed','Share billed'],rows.map(({p,a})=>[p.l,num(a.owed,2),num(a.rental,2),num(a.owed-a.rental,2),num(a.real*100,1)+'%']),['Total',num(S.owed,2),num(S.rental,2),num(S.owed-S.rental,2),num(S.real*100,1)+'%']); }
@@ -1101,7 +1117,7 @@ const chip=(id,l)=>`<span class="ref-chip" data-on="${id}">${esc(l||N[id].l)}</s
 function answer(q){ const t=state.t, S=vals({},t,'actual'), B=vals({},t,'budget'), m=MONTHS[t].label; const ql=q.toLowerCase();
   const park=PARKS.find(p=>ql.includes(p.l.toLowerCase().split(/[ ,(]/)[0].toLowerCase()) && p.k!=='oth');
   if(park){ const a=vals({park:park.k},t,'actual'), b=vals({park:park.k},t,'budget');
-    return `<p><b>${park.l}</b> (${park.r}) in ${m}: ${chip('noi','Park NOI')} ${rs(a.noi,2)} cr against ${rs(b.noi,2)} cr plan, on ${rs(a.rev,2)} cr revenue.</p><p>${num(a.comp,2)}M sq ft finished, ${chip('occ')} ${num(a.occ*100,1)}%, ${chip('rent')} ${rs(a.rent,1)}, ${chip('real')} ${num(a.real*100,1)}%. ${a.np>0.05?`${num(a.np,2)}M sq ft is leased but not yet paying.`:''} ${a.lateA>0?`${num(a.lateA,2)}M sq ft is running ${num(a.daysLate,0)} days late, costing ${rs(a.rentLost,2)} cr of rent a month.`:''} Yield on cost ${num(a.yoc*100,1)}%.</p>`; }
+    return `<p><b>${park.l}</b> (${park.r}) in ${m}: ${chip('gm','Gross margin')} ${rs(a.noi,2)} cr against ${rs(b.noi,2)} cr plan, on ${rs(a.rev,2)} cr revenue.</p><p>${num(a.comp,2)}M sq ft finished, ${chip('occ')} ${num(a.occ*100,1)}%, ${chip('rent')} ${rs(a.rent,1)}, ${chip('real')} ${num(a.real*100,1)}%. ${a.np>0.05?`${num(a.np,2)}M sq ft is leased but not yet paying.`:''} ${a.lateA>0?`${num(a.lateA,2)}M sq ft is running ${num(a.daysLate,0)} days late, costing ${rs(a.rentLost,2)} cr of rent a month.`:''} Yield on cost ${num(a.yoc*100,1)}%.</p>`; }
   if(/bill|leak|owed/.test(ql)){ const rows=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>(y.a.owed-y.a.rental)-(x.a.owed-x.a.rental)).slice(0,3);
     return `<p>In ${m} the leases said ${rs(S.owed,1)} cr of rent was owed and ${rs(S.rental,1)} cr was billed: ${rs(S.owed-S.rental,2)} cr not billed, ${chip('real')} ${num(S.real*100,1)}% against a 99.7% plan.</p><p>Largest gaps: ${rows.map(x=>`${x.p.l} ${rs(x.a.owed-x.a.rental,2)} cr (${num(x.a.real*100,1)}%)`).join(', ')}. Each point of rent billed is worth about ${rs(S.owed*.01,2)} cr a month.</p>`; }
   if(/not pay|lease-up|fit|waiting|lease faster|leased space/.test(ql)){ const rows=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>y.a.np-x.a.np).slice(0,3);
@@ -1124,7 +1140,7 @@ function trendBlock(id,L,label){ L=L||{}; const m=N[id]; const t0=Math.max(0,sta
   for(let i=t0;i<=state.t;i++){ const A=vals({format:null,region:null,park:null,seg:null,...L},i,'actual'), B=vals({format:null,region:null,park:null,seg:null,...L},i,'budget'); xs.push(MONTHS[i].label.split(' ')[0]); a.push(A?m.v(A):null); b.push(B?m.v(B):null); }
   return `<div class="trend"><div class="trend-h">${esc(label||m.l)}, last six months</div><div class="tw"><table class="t"><thead><tr><th></th>${xs.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody><tr><td>Actual</td>${a.map(v=>`<td><b>${fv(m.u,v).m}</b></td>`).join('')}</tr><tr><td>Plan</td>${b.map(v=>`<td>${fv(m.u,v).m}</td>`).join('')}</tr></tbody></table></div></div>`; }
 function trendFor(q){ const ql=q.toLowerCase(); const park=PARKS.find(p=>ql.includes(p.l.toLowerCase().split(/[ ,(]/)[0].toLowerCase()) && p.k!=='oth');
-  if(park){ const L={park:park.k,region:park.r}; return /bill|owed/.test(ql)? trendBlock('real',L,`${park.l}: rent billed vs owed`) : /occup/.test(ql)? trendBlock('occ',L,`${park.l}: occupancy`) : trendBlock('noi',L,`${park.l}: park profit`); }
+  if(park){ const L={park:park.k,region:park.r}; return /bill|owed/.test(ql)? trendBlock('real',L,`${park.l}: rent billed vs owed`) : /occup/.test(ql)? trendBlock('occ',L,`${park.l}: occupancy`) : trendBlock('gm',L,`${park.l}: gross margin`); }
   if(/bill|leak|owed/.test(ql)) return trendBlock('real');
   if(/not pay|lease-up|fit|waiting|started|leased space/.test(ql)) return trendBlock('np');
   if(/cash|fcf|debt/.test(ql)) return trendBlock('fcf')+trendBlock('dd');
@@ -1177,35 +1193,65 @@ function bindAl(){ const p=$('#page');
 
 
 // ---------- start here (overview) ----------
-function walkHTML(S){ const steps=[['Revenue','',S.rev,'tot'],['Park running costs','',-S.popex],['Bad debt','',-S.bad],['Head office costs','',-S.ovh],['Interest and other income','',S.oi],['EBITDA',`${num(S.margin*100,0)}% margin`,S.ebitda,'tot'],['Depreciation','',-S.da],['Interest','',-S.fin],['Tax','',-S.tax],['Net profit','',S.pat,'tot']];
+function walkHTML(S){ const steps=[['Revenue','',S.rev,'tot'],['Park running costs','',-S.popex],['Gross margin',`${num(S.gm/S.rev*100,0)}% of revenue`,S.gm,'tot'],['Interest and other income','',S.oi],['Total income','',S.ti,'tot'],['Bad debt','',-S.bad],['Head office costs','',-S.ovh],['EBITDA',`${num(S.margin*100,0)}% of total income`,S.ebitda,'tot'],['Depreciation','',-S.da],['Interest','',-S.fin],['Tax','',-S.tax],['Net profit','',S.pat,'tot']];
   const max=S.rev*1.04; const X=v=>v/max*100; let run=0; let out='';
   for(const [l,s,v,tot] of steps){ let left,width,col;
     if(tot){ left=Math.min(0,v); width=Math.abs(v); run=v; col=v<0?'var(--bad)':'var(--tot)'; left=v<0?0:0; }
     else { const a=run, b=run+v; left=Math.min(a,b); width=Math.abs(v); run=b; col=v<0?'var(--bad)':'var(--good)'; }
     const lp=Math.max(0,X(left)), wp=Math.max(.5,X(width));
-    out+=`<div class="wl ${tot?'tot':''}" style="${tot?'font-weight:700':''}">${l}<small>${s}</small></div><div class="wb"><div style="left:${lp}%;width:${wp}%;background:${col}"></div></div><div class="wv ${v<0&&!tot?'bad-t':''}">${v<0?MINUS:(tot?'':'+')}${num(Math.abs(v),1)}</div>`; }
+    out+=`<div class="wl ${tot?'tot':''}" style="${tot?'font-weight:700':''}">${l}<small>${s}</small></div><div class="wb"><div style="left:${lp}%;width:${wp}%;background:${col}"></div></div><div class="wv ${v<0&&!tot?'bad-t':''}">${v<0?MINUS:(tot?'':'+')}${num(Math.abs(v),Math.abs(v)<0.1?2:1)}</div>`; }
   return `<div class="walk">${out}</div>`; }
 function viewOv(){ const t=state.t, m=MONTHS[t].label; const S=vals({},t,'actual'), B=vals({},t,'budget'); const br=bridge({},t,'budget');
   const top=br.steps.filter(s=>s.v<0).sort((a,b)=>a.v-b.v).slice(0,2);
   const lossTxt = S.pat<0? `still left a net loss of ${rs(-S.pat,1)} cr` : `left a net profit of ${rs(S.pat,1)} cr`;
   const L0=t>=12?vals({},t-12,'actual'):null; const brY=t>=12?bridge({},t,'ly'):null; const ups=brY? brY.steps.filter(s=>s.v>0).sort((a,b)=>b.v-a.v).slice(0,2):[];
   let h=`<section class="hero"><div class="when">${m}, compared with ${L0?MONTHS[t-12].label:'the previous month'}</div>
-   <h2>Horizon kept ${num(S.margin*100,0)}% of its ${rs(S.rev,1)} cr revenue as operating profit, but interest and depreciation ${lossTxt}.</h2>
+   <h2>Horizon kept ${num(S.margin*100,0)}% of its ${rs(S.rev+S.oi,1)} cr total income as EBITDA, but interest and depreciation ${lossTxt}.</h2>
    ${L0?`<p>Revenue is ${num((S.rev/L0.rev-1)*100,0)}% higher than in ${MONTHS[t-12].label}, mostly from ${ups.map(s=>PHR[s.k][1]).join(' and ')}. Net profit moved from ${rs(L0.pat,1)} cr to ${rs(S.pat,1)} cr, helped by lower interest.</p>`:''}
    <div class="hero-stats"><div><b>${num(S.comp,1)}M sq ft</b><span>finished and ready to lease</span></div><div><b>${num(S.occ*100,1)}%</b><span>of it leased</span></div><div><b>${rs(S.rent,1)}</b><span>rent per sq ft a month</span></div><div><b>${rs(S.pat,1)} cr</b><span>net profit this month</span></div></div><p style="margin-top:14px;font-size:12.5px;color:var(--mute)">Illustrative demo. Company totals match Horizon’s FY26 annual report and Q1 FY27 results. Monthly phasing, park, tenant and plan figures are illustrative.</p></section>`;
   h+=`<section class="ov-sec"><div><h3>How the month’s rent is built</h3></div><div>
-      <div class="eq"><button class="t" data-on="billed"><b>${num(S.billed,1)}M sq ft</b><span>space paying rent</span></button><span class="o">×</span><button class="t" data-on="rent"><b>${rs(S.rent,1)}</b><span>rent per sq ft a month</span></button><span class="o">×</span><button class="t" data-on="real"><b>${num(S.real*100,1)}%</b><span>of rent owed actually billed</span></button><span class="o">=</span><button class="t" data-on="rental"><b>${rs(S.rental,1)} cr</b><span>rent billed this month</span></button></div>
+      <div class="eq"><button class="t" data-tree="billed"><b>${num(S.billed,1)}M sq ft</b><span>space paying rent</span></button><span class="o">×</span><button class="t" data-tree="rent"><b>${rs(S.rent,1)}</b><span>rent per sq ft a month</span></button><span class="o">×</span><button class="t" data-tree="real"><b>${num(S.real*100,1)}%</b><span>of rent owed actually billed</span></button><span class="o">=</span><button class="t" data-tree="rental"><b>${rs(S.rental,1)} cr</b><span>rent billed this month</span></button></div>
    <p class="para">Maintenance services and other operating income add ${rs(S.svc,1)} cr, so revenue is ${rs(S.rev,1)} cr.</p></div></section>`;
   h+=`<section class="ov-sec"><div><h3>From revenue to net profit</h3></div><div>${walkHTML(S)}<p class="para" style="margin-top:12px;color:var(--mute)">₹ crore, ${m}</p></div></section>`;
+  const LYo=t>=12?vals({},t-12,'actual'):null; const npParks=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>y.a.np-x.a.np).slice(0,3);
   const npRent=S.np*S.rent/10, missed=S.owed-S.rental; const lateParks=PARKS.filter(p=>vals({park:p.k},t,'actual').lateA>0.01).map(p=>p.l);
   const billParks=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>(y.a.owed-y.a.rental)-(x.a.owed-x.a.rental)).slice(0,2).map(x=>x.p.l);
   h+=`<section class="ov-sec"><div><h3>Three levers that move profit</h3></div><div class="levers3">
-   <div><h4>Get rent started sooner</h4><div class="big">${num(S.np,2)}M sq ft</div><p>leased with rent not yet started, against ${num(B.np,2)}M in the illustrative plan: ${rs(npRent,1)} cr of rent a month waiting.</p><div class="m">Rent starting a month sooner is worth about ₹16 cr a year.</div><p style="margin-top:8px"><button class="linkb" data-on="np">Open in the tree</button></p></div>
-   <div><h4>Bill all the rent owed</h4><div class="big">${num(S.real*100,1)}%</div><p>of rent owed was billed. ${rs(missed,1)} cr missed this month, mostly at ${billParks.join(' and ')}.</p><div class="m">Each extra point billed is worth about ₹8 cr a year.</div><p style="margin-top:8px"><button class="linkb" data-on="real">Open in the tree</button></p></div>
-   <div><h4>Finish buildings on time</h4><div class="big">${num(S.lateA,2)}M sq ft</div><p>planned by now and not yet finished. Late blocks at ${lateParks.join(', ')} cost ${rs(S.rentLost,1)} cr of rent this month.</p><div class="m">Each 1M sq ft finished a month late costs about ₹2.75 cr of rent.</div><p style="margin-top:8px"><button class="linkb" data-on="late">Open in the tree</button></p></div></div></section>`;
-  h+=`<section class="ov-sec"><div><h3>Gap to the illustrative plan</h3></div><div><p class="para" style="font-size:15px">${bridgeSummary(br,'the illustrative plan')} Interest and depreciation together were ${rs((S.da+S.fin)-(B.da+B.fin),1)} cr over plan.</p><p class="para"><button class="linkb" id="goTree">Go to the value tree</button></p></div></section>`;
+   <div><h4>Get rent started sooner</h4><div class="big">${num(S.np,2)}M sq ft</div><p>leased with rent not yet started${LYo?`, against ${num(LYo.np,2)}M a year ago`:''}: ${rs(npRent,1)} cr of rent a month waiting.</p><div class="m">Rent starting a month sooner is worth about ₹16 cr a year (Aistra estimate).</div><p class="lv-links"><button class="linkb" data-more="np">See more</button><button class="linkb" data-tree="np">See in the value tree</button></p></div>
+   <div><h4>Charge more rent per sq ft</h4><div class="big">${rs(S.rent,1)}</div><p>average monthly rent per sq ft${LYo?`, up ${num((S.rent/LYo.rent-1)*100,1)}% on a year ago`:''}. Leases add 4.5–5% a year by contract; renewals and new leases decide the rest.</p><div class="m">Each 1% more rent on signed leases is worth about ₹9.7 cr a year (Aistra estimate).</div><p class="lv-links"><button class="linkb" data-more="rent">See more</button><button class="linkb" data-tree="rent">See in the value tree</button></p></div>
+   <div><h4>Cut delays and unpaid rent</h4><div class="big">${rs(S.rentLost+missed,2)} cr</div><p>of rent lost this month: ${rs(S.rentLost,2)} cr from ${num(S.lateA,2)}M sq ft finished late, and ${rs(missed,2)} cr owed but not billed.</p><div class="m">Each 1M sq ft finished a month late costs about ₹2.75 cr of rent; unpaid rent adds to this.</div><p class="lv-links"><button class="linkb" data-more="delay">See more</button><button class="linkb" data-tree="late">See in the value tree</button></p></div></div></section>`;
+  if(brY){ const dDF=(S.da+S.fin)-(L0.da+L0.fin); h+=`<section class="ov-sec"><div><h3>Change on last year</h3></div><div><p class="para" style="font-size:15px">${bridgeSummary(brY,MONTHS[t-12].label)} Interest and depreciation together were ${rs(Math.abs(dDF),1)} cr ${dDF<0?'lower':'higher'} than a year ago.</p><p class="para"><button class="linkb" id="goTree">See in the value tree</button></p></div></section>`; }
   return h; }
-function bindOv(){ const p=$('#page'); p.querySelectorAll('[data-on]').forEach(b=>b.onclick=()=>{ if(b.dataset.tabgo){ state.tab=b.dataset.tabgo; } openNode(b.dataset.on); });
+
+function leverPanel(k){ const t=state.t; const S=vals({},t,'actual'); const P=PARKS.map(p=>({p,a:vals({park:p.k,region:p.r},t,'actual'),y:t>=12?vals({park:p.k,region:p.r},t-12,'actual'):null}));
+  let title,tables=[],holds,helps,extra='',links=[[k==='delay'?'late':k,'See in the value tree']];
+  if(k==='np'){ title='Get rent started sooner';
+    tables.push(['Where it is waiting',['Park','Leased, rent not started','Rent waiting, ₹ cr a month'],P.filter(x=>x.a.np>0.01).sort((x,y)=>y.a.np-x.a.np).slice(0,6).map(x=>[x.p.l,`${num(x.a.np,2)}M sq ft`,num(x.a.np*x.a.rent/10,2)])]);
+    holds=['Tenant fit-out after the building is handed over','Rent-free months agreed in the lease','Handover items such as power connections and occupancy approvals'];
+    helps=['Tie the rent start date to handover rather than to the tenant’s fit-out','Line up power and approvals before the building is finished','Track every signed lease to its first rent bill, with an owner and a date']; }
+  else if(k==='rent'){ title='Charge more rent per sq ft';
+    tables.push(['Rent per sq ft a month, by park',['Park','Now','A year ago','Change'],P.filter(x=>x.a.rent).sort((x,y)=>y.a.rent-x.a.rent).map(x=>[x.p.l,rs(x.a.rent,1),x.y&&x.y.rent?rs(x.y.rent,1):'–',x.y&&x.y.rent?`${num((x.a.rent/x.y.rent-1)*100,1)}%`:'–'])]);
+    holds=['Leases fix increases at 4.5–5% a year, so most rent moves only at renewal or re-letting','Renewals priced on the old rent rather than today’s market','Big out-of-town parks earn less per sq ft than city warehouses'];
+    helps=['Price every renewal and re-let against current market rent; Horizon re-let space at 10% higher rent in FY26','Track lease expiries a year ahead to plan renewal pricing','Grow city warehouses, which earn 2–3x park rent']; }
+  else { title='Cut delays and unpaid rent'; links=[['late','Late buildings in the value tree'],['real','Rent billed vs owed in the value tree']];
+    tables.push(['Buildings finished late',['Park','Finished late','Days late','Rent lost, ₹ cr a month'],P.filter(x=>x.a.lateA>0.01).sort((x,y)=>y.a.rentLost-x.a.rentLost).map(x=>[x.p.l,`${num(x.a.lateA,2)}M sq ft`,num(x.a.daysLate,0),num(x.a.rentLost,2)])]);
+    tables.push(['Rent owed but not billed',['Park','Rent billed vs owed','Not billed, ₹ cr this month'],P.sort((x,y)=>(y.a.owed-y.a.rental)-(x.a.owed-x.a.rental)).slice(0,5).map(x=>[x.p.l,`${num(x.a.real*100,1)}%`,num(x.a.owed-x.a.rental,2)])]);
+    extra=`<p class="para" style="margin-top:12px">Reported: receivables overdue by more than six months (considered good) were ₹13.7 cr at 31 March 2026, up from ₹3.6 cr a year earlier (annual report note 11). Tenants now take ${num(S.dd,0)} days to pay.</p>`;
+    holds=['Government approvals and permits, contractor progress and tenant design changes','Power and utility connections at handover','Yearly rent increases and charges not billed on time','Tenants paying late, often over disputed bills'];
+    helps=['Track each building against its plan every week, with approvals tracked to their deadlines','Check contractor bills against work done before paying','Check every lease against what was billed, every month','Follow up overdue rent tenant by tenant, by age of the amount owed']; }
+  $('#dTitle').innerHTML=`<h3>${title}</h3><div class="tags"><span class="tag">${MONTHS[t].label}</span></div>`;
+  $('#dBody').innerHTML=tables.map(([h,hd,rows],i)=>`<div class="h4" ${i?'':'style="margin-top:0"'}>${h}</div>${tableHTML(hd,rows)}`).join('')+extra+`
+   <div class="h4">What usually holds it</div><ul class="plist">${holds.map(x=>`<li>${x}</li>`).join('')}</ul>
+   <div class="h4">What helps</div><ul class="plist">${helps.map(x=>`<li>${x}</li>`).join('')}</ul>
+   <p class="deck-note">Park figures are illustrative. Reasons and actions are common industry practice, to be confirmed with Horizon’s teams.</p>
+   <p class="lv-links" style="margin-top:6px">${links.map(([n,l])=>`<button class="linkb" data-lp="${n}">${l}</button>`).join('')}</p>`;
+  $('#drawer').classList.add('open'); $('#scrim').classList.add('on');
+  $('#dBody').querySelectorAll('[data-lp]').forEach(b=>b.onclick=()=>{ closeDrawer(); goToNode(b.dataset.lp); }); }
+function goToNode(id){ const anc=[]; const def=TREES.pat; const par={}; for(const [k,kids] of Object.entries(def.ch)) for(const [c] of kids) par[c]=k;
+  let x=id; while(par[x]){ x=par[x]; state.collapsed[x]=false; }
+  state.view='tree'; state.tab='pat'; state.L={format:null,region:null,park:null,seg:null}; state.sel=id; renderAll();
+  setTimeout(()=>{ const el=document.querySelector(`#ti-pat .node[data-node="${id}"]`); if(el){ el.classList.add('picked'); el.scrollIntoView({block:'center',inline:'center',behavior:'smooth'}); } },60); }
+function bindOv(){ const p=$('#page'); p.querySelectorAll('[data-on]').forEach(b=>b.onclick=()=>openNode(b.dataset.on)); p.querySelectorAll('[data-tree]').forEach(b=>b.onclick=()=>goToNode(b.dataset.tree)); p.querySelectorAll('[data-more]').forEach(b=>b.onclick=()=>leverPanel(b.dataset.more));
   const g=$('#goTree'); if(g) g.onclick=()=>{ state.view='tree'; state.tab='pat'; renderAll(); window.scrollTo(0,0); }; }
 
 // ---------- render ----------
