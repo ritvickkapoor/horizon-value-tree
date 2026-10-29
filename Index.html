@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Horizon Industrial Parks · Value Tree Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --side:#1E2147; --side-2:#2A2E5C; --side-ink:#E6E7F5; --side-mute:#A3A6CC;
+  --accent:#6A4CF5; --accent-soft:#EEEAFE; --accent-ink:#4A31D1;
+  --bg:#F3F4F8; --card:#FFFFFF; --ink:#1B1E3D; --mute:#666A86; --line:#DFE1EA; --line-2:#ECEDF3;
+  --bad:#C9433F; --bad-soft:#FBE6E5; --good:#1F9A86; --good-soft:#DDF3EE; --flat:#9A9DB3; --flat-soft:#EEEFF4;
+  --amber:#C88A1E; --amber-soft:#FBF0D9; --grey-card:#F6F7FA;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --side:#14162F; --side-2:#232655; --side-ink:#E6E7F5; --side-mute:#9598C0;
+  --accent:#8C74FF; --accent-soft:#2A2550; --accent-ink:#B9AAFF;
+  --bg:#101225; --card:#191C36; --ink:#E9EAF6; --mute:#A0A3C0; --line:#2E3256; --line-2:#262A4A;
+  --bad:#F07A73; --bad-soft:#3A1E26; --good:#4DC9B2; --good-soft:#163430; --flat:#8A8DA8; --flat-soft:#24274A;
+  --amber:#E6B04E; --amber-soft:#3A3020; --grey-card:#1E2140; color-scheme: dark; } }
+:root[data-theme="dark"]{
+  --side:#14162F; --side-2:#232655; --side-ink:#E6E7F5; --side-mute:#9598C0;
+  --accent:#8C74FF; --accent-soft:#2A2550; --accent-ink:#B9AAFF;
+  --bg:#101225; --card:#191C36; --ink:#E9EAF6; --mute:#A0A3C0; --line:#2E3256; --line-2:#262A4A;
+  --bad:#F07A73; --bad-soft:#3A1E26; --good:#4DC9B2; --good-soft:#163430; --flat:#8A8DA8; --flat-soft:#24274A;
+  --amber:#E6B04E; --amber-soft:#3A3020; --grey-card:#1E2140; color-scheme: dark; }
+:root{ box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+html{ scroll-padding-top:env(safe-area-inset-top,0px); height:100%; }
+*,*::before,*::after{ box-sizing:inherit; }
+body{ margin:0; height:100%; background:var(--bg); color:var(--ink); font-family:Archivo, "Helvetica Neue", Arial, sans-serif; font-size:14px; line-height:1.45; }
+button{ font:inherit; color:inherit; cursor:pointer; }
+button:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.app{ display:grid; grid-template-columns:248px 1fr; height:100%; }
+/* sidebar */
+.side{ background:var(--side); color:var(--side-ink); display:flex; flex-direction:column; padding:20px 14px; position:sticky; top:0; height:100vh; height:100dvh; }
+.brand{ display:flex; gap:12px; align-items:center; padding:4px 6px 22px; }
+.logo{ width:40px; height:40px; border-radius:9px; background:var(--accent); display:grid; place-items:center; font-weight:700; color:#fff; letter-spacing:.02em; }
+.brand b{ display:block; font-size:16px; } .brand span{ color:var(--side-mute); font-size:13px; }
+.nav{ display:flex; flex-direction:column; gap:4px; }
+.nav button{ display:flex; align-items:center; gap:14px; background:none; border:0; color:var(--side-ink); padding:11px 12px; border-radius:9px; text-align:left; font-size:15px; }
+.nav button:hover{ background:rgba(255,255,255,.05); }
+.nav button.on{ background:var(--side-2); font-weight:600; }
+.nav svg{ width:20px; height:20px; flex:none; stroke:currentColor; fill:none; stroke-width:1.7; }
+.badge{ margin-left:auto; background:var(--bad); color:#fff; border-radius:999px; font-size:12px; min-width:22px; height:22px; display:grid; place-items:center; font-weight:600; }
+.side-foot{ margin-top:auto; color:var(--side-mute); font-size:12.5px; padding:6px; }
+.side-foot button{ background:none; border:0; color:var(--side-ink); padding:8px 0 0; font-weight:600; }
+/* main */
+.main{ min-width:0; display:flex; flex-direction:column; }
+.top{ background:var(--card); border-bottom:1px solid var(--line); padding:16px 28px 14px; position:sticky; top:env(safe-area-inset-top,0px); z-index:20; }
+body::before{ content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:30; background:var(--card); }
+.co-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+.co-row h1{ font-size:21px; margin:0; font-weight:600; letter-spacing:-.01em; }
+.chip{ background:var(--accent-soft); color:var(--accent-ink); border-radius:999px; padding:4px 12px; font-size:13px; font-weight:500; display:inline-flex; gap:8px; align-items:center; }
+.chip::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); }
+.filters{ display:flex; gap:10px; flex-wrap:wrap; }
+.sel{ position:relative; display:flex; align-items:center; border:1px solid var(--line); border-radius:9px; background:var(--card); padding:0 10px 0 12px; height:40px; gap:6px; }
+.sel label{ color:var(--mute); font-size:14px; white-space:nowrap; }
+.sel select{ appearance:none; border:0; background:transparent; font:inherit; font-weight:600; color:var(--ink); padding:0 22px 0 2px; height:38px; cursor:pointer; max-width:150px; }
+.sel::after{ content:""; position:absolute; right:12px; top:16px; width:7px; height:7px; border-right:1.8px solid var(--mute); border-bottom:1.8px solid var(--mute); transform:rotate(45deg); pointer-events:none; }
+.sel select option{ color:#1B1E3D; }
+.seg{ display:inline-flex; background:var(--grey-card); border:1px solid var(--line); border-radius:9px; padding:3px; align-items:center; height:40px; }
+.seg span{ color:var(--mute); padding:0 10px; font-size:13px; }
+.seg button{ border:0; background:none; padding:6px 13px; border-radius:7px; font-size:14px; color:var(--ink); }
+.seg button.on{ background:var(--card); font-weight:600; box-shadow:0 1px 2px rgba(20,22,60,.12); }
+.page{ padding:22px 28px 60px; }
+.lens-note{ margin:0 0 16px; color:var(--mute); font-size:13.5px; max-width:1100px; }
+.lens-note button{ margin-left:6px; }
+.lens-note b{ color:var(--ink); font-weight:600; }
+.lens-note button{ border:1px solid var(--line); background:var(--card); border-radius:999px; padding:3px 10px; font-size:12.5px; }
+/* KPI strip */
+.kpis{ display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:14px; margin-bottom:18px; }
+.kpi{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 16px 14px; position:relative; overflow:hidden; min-height:128px; cursor:pointer; text-align:left; }
+.kpi::before{ content:""; position:absolute; left:18px; right:18px; top:0; height:4px; border-radius:0 0 3px 3px; background:var(--flat); }
+.kpi.bad::before{ background:var(--bad); } .kpi.good::before{ background:var(--good); }
+.kpi .t{ color:var(--mute); font-size:14px; font-weight:500; }
+.kpi .v{ font-size:27px; font-weight:600; letter-spacing:-.02em; margin:4px 0 2px; }
+.kpi .c{ color:var(--mute); font-size:13px; }
+.kpi .d{ font-size:13.5px; font-weight:600; margin-top:2px; }
+.kpi.na .v{ color:var(--flat); font-size:16px; font-weight:500; margin-top:10px; }
+.kpi svg{ position:absolute; right:14px; bottom:16px; width:86px; height:34px; }
+.up-bad,.dn-bad,.bad-t{ color:var(--bad); } .good-t{ color:var(--good); } .flat-t{ color:var(--flat); }
+/* tabs row */
+.tabrow{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-bottom:14px; }
+.tabs{ display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:4px; }
+.tabs button{ border:0; background:none; padding:8px 16px; border-radius:7px; font-size:15px; }
+.tabs button.on{ background:var(--grey-card); font-weight:600; }
+.legend{ display:flex; gap:16px; color:var(--mute); font-size:13.5px; flex-wrap:wrap; }
+.legend i{ display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; }
+/* tree panels */
+.panels{ display:grid; gap:16px; }
+.panel{ background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; position:relative; }
+.panel-h{ display:flex; align-items:center; gap:10px; padding:14px 20px; border-bottom:1px solid var(--line-2); }
+.panel-h h2{ font-size:17px; margin:0; font-weight:600; }
+.panel-h .sq{ width:11px; height:11px; border-radius:3px; background:var(--ink); }
+.panel-h .sub{ color:var(--mute); font-size:13px; }
+.panel-h .r{ margin-left:auto; display:flex; gap:8px; }
+.btn{ border:1px solid var(--line); background:var(--card); border-radius:8px; padding:7px 12px; font-size:13.5px; }
+.btn.pri{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600; }
+.tree-wrap{ position:relative; overflow:auto; padding:18px 20px 70px; }
+.tree-inner{ position:relative; transform-origin:0 0; }
+.tree-svg{ position:absolute; inset:0; overflow:visible; pointer-events:none; }
+.col-label{ position:absolute; font-size:11.5px; color:var(--mute); font-weight:600; letter-spacing:.03em; }
+.node{ position:absolute; width:196px; height:94px; background:var(--card); border:1px solid var(--line); border-radius:9px; padding:9px 12px 8px 15px; cursor:pointer; text-align:left; overflow:hidden; }
+.node::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--flat); }
+.node.bad::before{ background:var(--bad); } .node.good::before{ background:var(--good); }
+.node:hover{ border-color:var(--accent); }
+.node.sel{ box-shadow:0 0 0 2px var(--accent); }
+.node.alt{ background:var(--grey-card); }
+.node.ref{ border-style:dashed; }
+.node .n{ font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding-right:18px; }
+.node .val{ font-size:21px; font-weight:600; letter-spacing:-.01em; margin-top:1px; }
+.node .val small{ font-size:12px; color:var(--mute); font-weight:500; margin-left:3px; }
+.node .ft{ display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:var(--mute); margin-top:3px; gap:4px; white-space:nowrap; }
+.node .ft span:first-child{ overflow:hidden; text-overflow:ellipsis; }
+.dchip{ border-radius:5px; padding:2px 6px; font-weight:600; font-size:12px; white-space:nowrap; }
+.dchip.bad{ background:var(--bad-soft); color:var(--bad); } .dchip.good{ background:var(--good-soft); color:var(--good); } .dchip.flat{ background:var(--flat-soft); color:var(--mute); }
+.node.off{ background:repeating-linear-gradient(135deg,var(--grey-card) 0 8px, var(--card) 8px 16px); cursor:default; }
+.node.off::before{ background:var(--line); }
+.node.off .val{ font-size:13px; color:var(--mute); font-weight:500; margin-top:10px; }
+.node .ext{ position:absolute; right:8px; top:8px; width:18px; height:18px; color:var(--accent); }
+.op{ position:absolute; width:20px; height:20px; border-radius:50%; background:var(--card); border:1px solid var(--line); display:grid; place-items:center; font-size:13px; color:var(--mute); font-weight:600; line-height:1; }
+.tog{ position:absolute; height:22px; min-width:22px; padding:0 5px; border-radius:11px; background:var(--card); border:1px solid var(--line); font-size:11.5px; font-weight:600; color:var(--ink); display:grid; place-items:center; }
+.tog:hover{ border-color:var(--accent); color:var(--accent); }
+.edge-note{ position:absolute; font-size:11.5px; color:var(--mute); }
+.zoom{ position:absolute; right:16px; bottom:14px; display:flex; align-items:center; gap:2px; background:var(--card); border:1px solid var(--line); border-radius:10px; padding:4px; box-shadow:0 2px 10px rgba(20,22,60,.08); z-index:2; }
+.zoom button{ border:0; background:none; padding:6px 10px; border-radius:6px; font-size:13.5px; }
+.zoom button:hover{ background:var(--grey-card); }
+.zoom span{ color:var(--mute); font-size:13px; min-width:44px; text-align:center; }
+.zoom i{ width:1px; height:20px; background:var(--line); margin:0 4px; }
+/* lower row */
+.lower{ display:grid; grid-template-columns:1.25fr 1fr; gap:16px; margin-top:16px; }
+.box{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px; }
+.box h3{ margin:0; font-size:18px; font-weight:600; }
+.box .sub{ color:var(--mute); font-size:13.5px; margin:2px 0 14px; }
+.box-h{ display:flex; align-items:flex-start; gap:12px; justify-content:space-between; flex-wrap:wrap; }
+.bridge-row{ display:grid; grid-template-columns:minmax(150px,240px) 1fr 70px; align-items:center; gap:12px; padding:6px 0; }
+.bridge-row .lbl{ font-size:14.5px; display:flex; gap:6px; align-items:center; }
+.bridge-row .lbl button{ border:0; background:none; padding:0; width:18px; color:var(--mute); font-weight:600; }
+.bridge-row.tot .lbl{ font-weight:600; }
+.bar-track{ position:relative; height:20px; }
+.bar{ position:absolute; top:0; height:20px; border-radius:4px; }
+.bar.tot{ background:var(--side); } .bar.neg{ background:var(--bad); } .bar.pos{ background:var(--good); }
+:root[data-theme="dark"] .bar.tot{ background:#5A5E9A; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bar.tot{ background:#5A5E9A; } }
+.bridge-row .num{ text-align:right; font-weight:600; font-variant-numeric:tabular-nums; }
+.sub-rows{ padding:2px 0 8px 26px; border-left:2px solid var(--line-2); margin-left:8px; }
+.sub-rows div{ display:flex; justify-content:space-between; font-size:13px; color:var(--mute); padding:2px 0; }
+.check{ border-top:1px solid var(--line); margin-top:12px; padding-top:12px; color:var(--mute); font-size:13px; }
+.alert-li{ display:grid; grid-template-columns:14px 1fr auto; gap:10px; padding:12px 0; border-bottom:1px solid var(--line-2); cursor:pointer; }
+.alert-li:last-child{ border-bottom:0; }
+.dot{ width:10px; height:10px; border-radius:50%; margin-top:6px; background:var(--bad); }
+.dot.amber{ background:var(--amber); } .dot.grey{ background:var(--flat); }
+.alert-li .tt{ font-weight:600; font-size:14.5px; }
+.tags{ display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; align-items:center; }
+.tag{ border-radius:999px; padding:2px 10px; font-size:12.5px; font-weight:600; background:var(--grey-card); color:var(--ink); border:1px solid var(--line); }
+.tag.open{ background:var(--bad-soft); color:var(--bad); border-color:transparent; }
+.tag.ack{ background:var(--amber-soft); color:var(--amber); border-color:transparent; }
+.tag.closed{ background:var(--good-soft); color:var(--good); border-color:transparent; }
+.tag.rev{ background:var(--accent-soft); color:var(--accent-ink); border-color:transparent; }
+.imp{ text-align:right; } .imp b{ display:block; font-size:16px; color:var(--bad); } .imp span{ color:var(--mute); font-size:12.5px; }
+/* drawer */
+.drawer{ position:fixed; top:0; right:0; bottom:0; width:min(480px,100%); background:var(--card); border-left:1px solid var(--line); z-index:50; transform:translateX(102%); transition:transform .22s ease; display:flex; flex-direction:column; box-shadow:-10px 0 40px rgba(20,22,60,.12); }
+.drawer.open{ transform:none; }
+.drawer-h{ padding:calc(18px + env(safe-area-inset-top,0px)) 22px 14px; border-bottom:1px solid var(--line-2); display:flex; gap:10px; align-items:flex-start; }
+.drawer-h h3{ margin:0; font-size:19px; }
+.drawer-h .x{ margin-left:auto; border:0; background:var(--grey-card); width:32px; height:32px; border-radius:8px; font-size:18px; flex:none; }
+.drawer-b{ overflow:auto; padding:18px 22px calc(30px + env(safe-area-inset-bottom,0px)); }
+.dl{ display:grid; grid-template-columns:110px 1fr; gap:6px 12px; font-size:13.5px; margin:12px 0; }
+.dl dt{ color:var(--mute); } .dl dd{ margin:0; }
+.bigv{ font-size:32px; font-weight:600; letter-spacing:-.02em; }
+.h4{ font-weight:600; font-size:13.5px; margin:20px 0 8px; color:var(--ink); }
+.read{ background:var(--accent-soft); color:var(--ink); border-radius:10px; padding:12px 14px; font-size:14px; }
+.read b{ color:var(--accent-ink); }
+table.t{ width:100%; border-collapse:collapse; font-size:13.5px; font-variant-numeric:tabular-nums; }
+table.t th{ text-align:right; color:var(--mute); font-weight:500; padding:6px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+table.t th:first-child, table.t td:first-child{ text-align:left; }
+table.t td{ text-align:right; padding:7px 8px; border-bottom:1px solid var(--line-2); }
+table.t tr.click{ cursor:pointer; } table.t tr.click:hover td{ background:var(--grey-card); }
+table.t tr.total td{ font-weight:600; border-top:1px solid var(--line); }
+.tw{ overflow-x:auto; }
+.splits{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+.splits button{ border:1px solid var(--line); background:var(--card); border-radius:999px; padding:4px 12px; font-size:12.5px; }
+.splits button.on{ background:var(--ink); color:var(--card); border-color:var(--ink); }
+.scrim{ position:fixed; inset:0; background:rgba(16,18,40,.28); z-index:40; display:none; }
+.scrim.on{ display:block; }
+/* generic page headings */
+.ph{ margin:2px 0 18px; } .ph h2{ font-size:30px; margin:0 0 6px; font-weight:600; letter-spacing:-.02em; } .ph p{ color:var(--mute); margin:0; max-width:760px; font-size:15.5px; }
+/* scenarios */
+.presets{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; margin-bottom:18px; }
+.preset{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; text-align:left; }
+.preset:hover{ border-color:var(--accent); }
+.preset.on{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+.preset b{ display:block; font-size:16px; margin-bottom:6px; } .preset span{ color:var(--mute); font-size:13.5px; }
+.sc-grid{ display:grid; grid-template-columns:minmax(300px,1fr) 1.3fr; gap:16px; }
+.lever{ padding:12px 0; border-bottom:1px solid var(--line-2); }
+.lever:last-child{ border-bottom:0; }
+.lever .lh{ display:flex; justify-content:space-between; gap:10px; font-weight:600; font-size:14px; }
+.lever .lh span{ color:var(--accent-ink); font-variant-numeric:tabular-nums; }
+.lever p{ margin:2px 0 6px; color:var(--mute); font-size:12.5px; }
+.lever input{ width:100%; accent-color:var(--accent); }
+.res-cards{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-bottom:16px; }
+.res{ border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+.res .t{ color:var(--mute); font-size:13.5px; } .res .v{ font-size:24px; font-weight:600; letter-spacing:-.01em; } .res .d{ font-size:13px; font-weight:600; }
+.deck-note{ font-size:13px; color:var(--mute); margin-top:12px; }
+/* reports */
+.rp-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.rp-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+.rp{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 22px; text-align:left; display:flex; flex-direction:column; }
+.rp:hover{ border-color:var(--accent); }
+.rp .id{ color:var(--mute); font-weight:600; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.rp h4{ font-size:19px; margin:10px 0 6px; font-weight:600; } .rp p{ color:var(--mute); margin:0 0 14px; font-size:14px; }
+.rp dl{ display:grid; grid-template-columns:1fr 1fr; gap:4px 16px; border-top:1px solid var(--line-2); padding-top:12px; margin:auto 0 0; font-size:13.5px; }
+.rp dt{ color:var(--mute); } .rp dd{ margin:0 0 6px; }
+.modal{ position:fixed; inset:0; z-index:60; display:none; align-items:flex-start; justify-content:center; padding:calc(30px + env(safe-area-inset-top,0px)) 16px 30px; overflow:auto; background:rgba(16,18,40,.35); }
+.modal.on{ display:flex; }
+.sheet{ background:var(--card); border-radius:14px; width:min(980px,100%); padding:26px 30px; position:relative; }
+.sheet .x{ position:absolute; right:16px; top:16px; border:0; background:var(--grey-card); width:34px; height:34px; border-radius:8px; font-size:18px; }
+.sheet h3{ font-size:22px; margin:0 0 4px; } .sheet .sub{ color:var(--mute); margin-bottom:18px; }
+.mini-kpis{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:18px; }
+.mini-kpis div{ border:1px solid var(--line); border-radius:10px; padding:10px 12px; } .mini-kpis span{ color:var(--mute); font-size:12.5px; display:block; } .mini-kpis b{ font-size:19px; }
+/* ask */
+.ask{ max-width:980px; margin:0 auto; }
+.qs{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin:12px 0 24px; }
+.qs button{ text-align:left; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; font-size:15px; }
+.qs button:hover{ border-color:var(--accent); }
+.convo{ display:flex; flex-direction:column; gap:14px; margin-bottom:20px; }
+.q-b{ align-self:flex-end; background:var(--accent); color:#fff; border-radius:14px 14px 4px 14px; padding:10px 14px; max-width:70%; }
+.a-b{ background:var(--card); border:1px solid var(--line); border-radius:14px 14px 14px 4px; padding:16px 18px; max-width:90%; font-size:14.5px; }
+.a-b p{ margin:0 0 8px; } .a-b p:last-child{ margin:0; }
+.ref-chip{ display:inline-block; border:1px solid var(--accent); color:var(--accent-ink); border-radius:6px; padding:0 6px; font-weight:600; font-size:13px; cursor:pointer; background:var(--accent-soft); }
+.ask-bar{ display:flex; gap:10px; position:sticky; bottom:0; background:var(--bg); padding:14px 0 calc(14px + env(safe-area-inset-bottom,0px)); }
+.ask-bar input{ flex:1; border:1.5px solid var(--accent); border-radius:10px; padding:12px 14px; font:inherit; font-size:15px; background:var(--card); color:var(--ink); }
+/* alerts page */
+.al-top{ display:grid; grid-template-columns:1fr auto; gap:16px; align-items:start; margin-bottom:8px; }
+.counts{ display:grid; grid-template-columns:repeat(4,110px); gap:10px; }
+.counts div{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; } .counts b{ font-size:24px; display:block; } .counts span{ color:var(--mute); font-size:13px; }
+.al-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:16px; align-items:start; }
+.al-card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin-bottom:10px; display:grid; grid-template-columns:14px 1fr auto; gap:12px; cursor:pointer; }
+.al-card.on{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
+.al-card .rule{ color:var(--mute); font-size:13.5px; } .al-card .tt{ font-weight:600; font-size:15px; margin:2px 0; }
+.al-detail{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px; border-top:4px solid var(--bad); position:sticky; top:150px; }
+.al-detail h3{ font-size:22px; margin:8px 0 8px; line-height:1.25; }
+.al-detail .sec{ font-size:12px; font-weight:700; color:var(--mute); letter-spacing:.06em; margin:18px 0 6px; }
+.why-li{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line-2); cursor:pointer; }
+.why-li b{ display:block; font-size:14px; } .why-li span{ color:var(--mute); font-size:13px; }
+.sowhat{ background:var(--grey-card); border-radius:10px; padding:12px 14px; font-size:14px; }
+.subtabs{ display:flex; gap:22px; border-bottom:1px solid var(--line); margin:10px 0 14px; }
+.subtabs button{ border:0; background:none; padding:10px 0; font-size:15px; color:var(--mute); border-bottom:2px solid transparent; }
+.subtabs button.on{ color:var(--ink); border-color:var(--accent); font-weight:600; }
+.pill-f{ display:inline-flex; gap:4px; background:var(--grey-card); border:1px solid var(--line); padding:3px; border-radius:999px; margin-bottom:12px; flex-wrap:wrap; }
+.pill-f button{ border:0; background:none; padding:5px 12px; border-radius:999px; font-size:13.5px; }
+.pill-f button.on{ background:var(--card); font-weight:600; box-shadow:0 1px 2px rgba(20,22,60,.1); }
+.empty{ color:var(--mute); padding:20px 0; }
+/* responsive */
+@media (max-width:1200px){ .kpis{ grid-template-columns:repeat(3,minmax(0,1fr)); } .lower,.al-grid,.sc-grid{ grid-template-columns:1fr; } .al-detail{ position:static; } }
+@media (max-width:860px){
+  .app{ grid-template-columns:1fr; }
+  .side{ position:static; height:auto; flex-direction:row; align-items:center; padding:10px 12px; overflow-x:auto; gap:8px; }
+  .brand{ padding:0 8px 0 0; } .brand div{ display:none; }
+  .nav{ flex-direction:row; } .nav button{ padding:8px 10px; font-size:14px; } .nav button .lab{ display:none; }
+  .side-foot{ display:none; }
+  .top{ padding:12px 16px; position:static; } .page{ padding:16px; }
+  .kpis{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .counts{ grid-template-columns:repeat(2,1fr); } .al-top{ grid-template-columns:1fr; }
+  .mini-kpis{ grid-template-columns:repeat(2,1fr); } .res-cards{ grid-template-columns:1fr; }
+}
+@media (prefers-reduced-motion: reduce){ .drawer{ transition:none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="logo">HI</div><div><b>Value Tree Studio</b><span>by Aistra</span></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot">Prototype. Totals follow Horizon’s published FY26 and Q1 FY27 results; park, tenant and monthly detail are made up for the demo.<br><button id="resetBtn">Reset view</button></div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <div class="co-row"><h1>Horizon Industrial Parks</h1><span class="chip">Illustrative data on published totals</span></div>
+      <div class="filters" id="filters"></div>
+    </header>
+    <main class="page" id="page"></main>
+  </div>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Node details"><div class="drawer-h"><div id="dTitle"></div><button class="x" id="dClose" aria-label="Close">×</button></div><div class="drawer-b" id="dBody"></div></aside>
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<script>
+// ===== Horizon value tree engine (pure JS, no DOM) =====
+const MONTHS = [];
+(function(){ const names=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let y=2025,m=4; for(let i=0;i<24;i++){ MONTHS.push({key:`${y}-${String(m).padStart(2,'0')}`,label:`${names[m-1]} ${y}`,i}); m++; if(m>12){m=1;y++;} } })();
+const LAST_ACTUAL = 17; // Sep 2026
+const FY_START = 12;    // Apr 2026
+
+const REGIONS = ['NCR','Pune','Nagpur','Ahmedabad','Bengaluru','Hyderabad','Chennai','Goa','InCity network','Other parks'];
+const FORMATS = [{k:'fc',l:'Fulfilment centres'},{k:'ind',l:'Industrial'},{k:'city',l:'InCity centres'}];
+const SEGMENTS = [
+  {k:'ecom',l:'E-commerce',f:'fc',w:19.2},{k:'logc',l:'Consumer logistics',f:'fc',w:19.2},{k:'retail',l:'Retail',f:'fc',w:11.0},{k:'logi',l:'Industrial logistics',f:'fc',w:2.5},
+  {k:'ev',l:'EV and auto',f:'ind',w:12.5},{k:'ren',l:'Renewables',f:'ind',w:9.8},{k:'mfg',l:'Manufacturing and other',f:'ind',w:25.9}
+];
+// Parks: completed M sq ft (Sep 2026), committed occupancy, rent Rs/sqft/month, FC share, region, start factor, budget-actual quirks
+const PARKS = [
+ {k:'fn1',l:'Farukhnagar I',r:'NCR',a:3.2,o:.90,rent:25.4,fc:.74,real:.962,np:.05,opx:.21},
+ {k:'fn2',l:'Farukhnagar II',r:'NCR',a:2.2,o:1.0,rent:22.5,fc:1,real:.996,np:.02,opx:.19},
+ {k:'luh',l:'Luhari',r:'NCR',a:3.3,o:.85,rent:22.3,fc:.85,real:.968,np:.06,opx:.22},
+ {k:'bil',l:'Bilaspur',r:'NCR',a:2.1,o:1.0,rent:29.5,fc:.64,real:.995,np:.12,opx:.2,late:.18,lateDays:54},
+ {k:'chk',l:'Chakan II',r:'Pune',a:1.4,o:1.0,rent:32.5,fc:1,real:.997,np:.02,opx:.2},
+ {k:'xsio',l:'XSIO Park One',r:'Nagpur',a:2.6,o:1.0,rent:21.6,fc:.95,real:.995,np:.18,opx:.18},
+ {k:'bhy',l:'Bhayala',r:'Ahmedabad',a:.5,o:1.0,rent:24.0,fc:0,real:.998,np:.0,opx:.17,young:true},
+ {k:'dob',l:'Dobbaspet I',r:'Bengaluru',a:1.8,o:1.0,rent:24.6,fc:0,real:.996,np:.38,opx:.2,young:true,late:.22,lateDays:71},
+ {k:'mal',l:'Malur',r:'Bengaluru',a:1.7,o:1.0,rent:25.1,fc:1,real:.996,np:.02,opx:.19},
+ {k:'hos',l:'Hosur',r:'Bengaluru',a:1.0,o:.85,rent:36.9,fc:.16,real:.995,np:.26,opx:.22,young:true},
+ {k:'kot',l:'Kothur',r:'Hyderabad',a:1.1,o:1.0,rent:23.8,fc:.87,real:.996,np:.03,opx:.19},
+ {k:'pat',l:'Patancheru',r:'Hyderabad',a:.6,o:1.0,rent:23.3,fc:.71,real:.997,np:.0,opx:.19},
+ {k:'ora',l:'Oragadam',r:'Chennai',a:3.7,o:1.0,rent:27.7,fc:.0,real:.995,np:.14,opx:.2,late:.25,lateDays:38},
+ {k:'map',l:'Mappedu',r:'Chennai',a:1.3,o:.77,rent:23.3,fc:.86,real:.976,np:.04,opx:.23},
+ {k:'ver',l:'InCity Verna',r:'Goa',a:.1,o:1.0,rent:27.2,city:true,real:.996,np:0,opx:.24},
+ {k:'icn',l:'InCity, 6 cities',r:'InCity network',a:1.15,o:.82,rent:46.0,city:true,real:.985,np:.12,opx:.3,young:true},
+ {k:'oth',l:'Other parks (29)',r:'Other parks',a:1.55,o:.95,rent:24.5,fc:.6,real:.99,np:.05,opx:.21},
+];
+const PARK_BY = Object.fromEntries(PARKS.map(p=>[p.k,p]));
+
+// deterministic noise
+function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return ((h>>>0)%10000)/10000;}
+function noise(s,amp){return (hash(s)-.5)*2*amp;}
+
+// ----- build rows -----
+const ROWS=[]; // row grain: park x format x segment
+for(const p of PARKS){
+  const parts=[];
+  if(p.city){ parts.push({f:'city',seg:'ecom',w:.55},{f:'city',seg:'logc',w:.3},{f:'city',seg:'retail',w:.15}); }
+  else {
+    const fcSegs=SEGMENTS.filter(s=>s.f==='fc'), indSegs=SEGMENTS.filter(s=>s.f==='ind');
+    const fw=fcSegs.reduce((a,s)=>a+s.w*(.6+hash(p.k+s.k)),0), iw=indSegs.reduce((a,s)=>a+s.w*(.6+hash(p.k+s.k)),0);
+    if(p.fc>0) fcSegs.forEach(s=>parts.push({f:'fc',seg:s.k,w:p.fc*s.w*(.6+hash(p.k+s.k))/fw}));
+    if(p.fc<1) indSegs.forEach(s=>parts.push({f:'ind',seg:s.k,w:(1-p.fc)*s.w*(.6+hash(p.k+s.k))/iw}));
+  }
+  for(const pt of parts){ ROWS.push({id:p.k+'|'+pt.f+'|'+pt.seg,park:p.k,region:p.r,format:pt.f,seg:pt.seg,w:pt.w}); }
+}
+
+// growth curve: area factor by month index (actual); young parks ramp faster
+function areaF(p,t){ const base = p.young? 0.55 : 0.84; if(t<=LAST_ACTUAL) return base+(1-base)*Math.pow(t/LAST_ACTUAL,1.1); return 1+0.011*(t-LAST_ACTUAL); }
+function rentF(t){ return Math.pow(1.048,(t-LAST_ACTUAL)/12); }
+
+// ----- data store -----
+// D.row[ver][t][rowId] = {comp,occ,np,rent,real,svc}
+// D.park[ver][t][park] = {opex,capex,opAssets,cwip,planYTD,delYTD,daysLate,rentB}
+// D.co[ver][t] = {oi,emp,oexp,da,fin,tax,taxPaid,dd,netDebt,shares}
+const D={row:{actual:[],budget:[]},park:{actual:[],budget:[]},co:{actual:[],budget:[]}};
+for(const ver of ['actual','budget']){
+  for(let t=0;t<24;t++){
+    if(ver==='actual' && t>LAST_ACTUAL){ D.row[ver][t]=null; D.park[ver][t]=null; D.co[ver][t]=null; continue; }
+    const rows={}, parks={};
+    let totRev=0, totComp=0;
+    for(const p of PARKS){
+      const af=areaF(p,t);
+      const b = ver==='budget';
+      const pk={};
+      // occupancy: actual drifts, budget a bit higher at weak parks
+      let occ = p.o + noise(p.k+t+'o',.012);
+      if(b) occ = Math.min(1, p.o<.95? p.o+.02 : p.o+.002);
+      occ=Math.min(1,occ);
+      // lease-up lag: area leased but not paying
+      let npShare = p.np*.8*(1+noise(p.k+t+'n',.2));
+      if(b) npShare = p.np*.62;
+      if(t<FY_START && b) npShare=p.np*.55;
+      let real = b? .997 : Math.min(.999,p.real+noise(p.k+t+'r',.004));
+      const rent = 1.028*p.rent*rentF(t)*(b? (1+ (p.k==='icn'? .03:.004)) : 1)*(1+noise(p.k+t+'p',.003));
+      // late deliveries: budget area includes the late blocks from Jul 2026
+      let comp = p.a*af;
+      if(!b && p.late && t>=15) comp -= p.late*(t>=16?1:.5);
+      if(b && p.late && t>=15 && t<FY_START+12) {/* budget has them on time */}
+      if(b && t>LAST_ACTUAL) comp = p.a*areaF(p,t);
+      let pRev=0;
+      for(const r of ROWS.filter(r=>r.park===p.k)){
+        const c=comp*r.w;
+        const rowRent = rent*(1+noise(r.id+'rr',.06))*(r.format==='ind'?1.04:1);
+        const v={comp:c,occ,np:c*occ*npShare,rent:rowRent,real,svc:1.05*(r.format==='city'?1.6:1)};
+        rows[r.id]=v;
+        const billed=c*occ-v.np; pRev+= (billed*rowRent*real + billed*v.svc)/10;
+      }
+      totRev+=pRev; totComp+=comp;
+      pk.opex = comp*p.opx*(b? .97:1)*(1+noise(p.k+t+'x',.05));
+      const planAnnual = ['bil','dob','ora','hos','icn','xsio','oth'].includes(p.k)? p.a*.18 : 0;
+      const ytdM = t>=FY_START? (t-FY_START+1) : 0;
+      pk.planYTD = planAnnual*ytdM/12;
+      pk.delYTD = Math.max(0, pk.planYTD - (!b && p.late && t>=15 ? p.late*(t>=16?1:.5) : 0));
+      pk.daysLate = (!b && p.late && t>=15)? p.lateDays*(t>=16?1:.6) : 0;
+      pk.rentB = 1.028*p.rent*rentF(t);
+      pk.capex = (planAnnual>0? planAnnual*1.6*210/12 : 1.5) * (b?1: (p.late? .82 : .97)) * (1+noise(p.k+t+'c',.08));
+      pk.opAssets = comp*365; // Rs cr per M sqft at cost
+      pk.cwip = (planAnnual*2.2+ (p.young? .4:0))*210*(b?.97:1);
+      parks[p.k]=pk;
+    }
+    const co={};
+    co.oi = (t>=FY_START? 1.6 : 6.4) + noise('oi'+t+ver,.25) + (ver==='budget'? -.15:0);
+    co.emp = 2.2 + t*.04 + (ver==='budget'?-.05:0);
+    co.oexp = 5.0 + t*.03 + noise('ox'+t+ver,.3) + (ver==='budget'?-.35:0);
+    co.da = 18.5 + t*.4 + (ver==='budget'?-.2:0);
+    co.fin = t<FY_START? 47 - t*.3 : 34.4 - (t-FY_START)*.3 + noise('fin'+t,.4) + (ver==='budget'?-.5:0);
+    co.dd = ver==='budget'? 60 : 62 + Math.max(0,t-12)*2 + noise('dd'+t,1.5);
+    co.netDebt = t<FY_START? 6100 - t*40 : 2440 + (t-FY_START)*28 + (ver==='budget'? -95:0);
+    co.shares = t<FY_START? 168 : 200; // crore shares (illustrative)
+    D.row[ver][t]=rows; D.park[ver][t]=parks; D.co[ver][t]=co;
+  }
+}
+// tax: small, set after EBITDA known (computed in engine as share of positive PBT plus minimum)
+
+// ----- lens & aggregation -----
+// lens = {format, region, park, seg} values or null
+function rowMatch(r,L){ return (!L.format||r.format===L.format)&&(!L.region||r.region===L.region)&&(!L.park||r.park===L.park)&&(!L.seg||r.seg===L.seg); }
+function parkMatch(pk,L){ const p=PARK_BY[pk]; return (!L.region||p.r===L.region)&&(!L.park||p.k===L.park); }
+function lensLevel(L){ // which grains are valid
+  const rowOnly = !!(L.format||L.seg);
+  const anyGeo = !!(L.region||L.park);
+  return { row:true, park: !rowOnly, co: !rowOnly && !anyGeo };
+}
+
+// scenario transform hooks: sc = {lag, bill, rent, occ, late, rate}
+function getRow(ver,t,r,sc){ const v=D.row[ver][t]&&D.row[ver][t][r.id]; if(!v) return null; if(!sc||ver!=='actual') return v;
+  const o={...v}; const p=PARK_BY[r.park];
+  if(sc.lag) o.np = v.np*(1-sc.lag);
+  if(sc.bill) o.real = Math.min(.999, v.real + sc.bill);
+  if(sc.rent) o.rent = v.rent*(1+sc.rent);
+  if(sc.occ) o.occ = Math.min(1, v.occ + sc.occ);
+  if(sc.late && p.late && t>=15) { o.comp += p.late*(t>=16?1:.5)*sc.late*r.w; }
+  return o; }
+
+function aggregate(L,t,ver,sc){
+  const lv=lensLevel(L);
+  const S={valid:lv, comp:0,leased:0,np:0,billed:0,owed:0,rental:0,svc:0};
+  if(!D.row[ver][t]) return null;
+  for(const r of ROWS){ if(!rowMatch(r,L)) continue; const v=getRow(ver,t,r,sc);
+    const leased=v.comp*v.occ, billed=leased-v.np, owed=billed*v.rent/10;
+    S.comp+=v.comp; S.leased+=leased; S.np+=v.np; S.billed+=billed; S.owed+=owed; S.rental+=owed*v.real; S.svc+=billed*v.svc/10; }
+  S.rev=S.rental+S.svc; S.occ=S.comp? S.leased/S.comp:null; S.rent=S.billed? S.owed*10/S.billed:null; S.real=S.owed? S.rental/S.owed:null;
+  S.lagMonths = S.billed? S.np/ ( (S.comp*0.012) || 1 ) : null; // not used
+  if(lv.park){ let opex=0,capex=0,opA=0,cwip=0,plan=0,del=0,late=0,lost=0,dlw=0;
+    for(const pk of PARKS){ if(!parkMatch(pk.k,L)) continue; const x=D.park[ver][t][pk.k];
+      let lateA=Math.max(0,x.planYTD-x.delYTD); if(sc&&sc.late&&ver==='actual') lateA*= (1-sc.late);
+      opex+=x.opex; capex+=x.capex; opA+=x.opAssets; cwip+=x.cwip; plan+=x.planYTD; del+=x.planYTD-lateA; late+=lateA; lost+=lateA*x.rentB/10; dlw+=x.daysLate*lateA; }
+    Object.assign(S,{popex:opex,noi:S.rev-opex,capex,opA,cwip,planYTD:plan,delYTD:del,lateA:late,rentLost:lost,daysLate: late? dlw/late:0, yoc: opA? (S.rev-opex)*12/opA:null}); }
+  if(lv.co){ const c=D.co[ver][t]; let fin=c.fin; if(sc&&sc.rate&&ver==='actual') fin = c.fin*(1+sc.rate/820);
+    S.oi=c.oi; S.emp=c.emp; S.oexp=c.oexp; S.ovh=c.emp+c.oexp; S.ebitda=S.noi+S.oi-S.ovh; S.da=c.da; S.fin=fin;
+    S.pbt=S.ebitda-S.da-S.fin; S.tax=0.35+Math.max(0,S.pbt)*.12; S.pat=S.pbt-S.tax; S.margin=S.rev? S.ebitda/S.rev:null;
+    S.dd=c.dd; const prevC = t>0? (D.co[ver][t-1]||D.co.actual[t-1]) : c;
+    const prevRev = t>0? aggSimpleRev(t-1,ver):S.rev;
+    S.wc = c.dd/30*S.rev; S.wcPrev = prevC.dd/30*prevRev; S.wcChg=S.wc-S.wcPrev;
+    if(sc){ S.wcChg = c.dd/30*aggSimpleRev(t,ver) - S.wcPrev; }
+    S.taxPaid=S.tax; S.cfo=S.ebitda-S.taxPaid-S.wcChg; S.intPaid=S.fin; S.fcf=S.cfo-S.capex-S.intPaid;
+    S.netDebt=c.netDebt; S.shares=c.shares;
+    S.ebitAnn=(S.ebitda-S.da)*12; S.capEmp=S.opA+S.cwip+S.wc; S.roce=S.capEmp? S.ebitAnn/S.capEmp:null;
+    S.icov = S.fin? S.ebitda/S.fin:null; }
+  return S; }
+const _revCache={};
+function aggSimpleRev(t,ver){ const k=t+ver; if(_revCache[k]!=null) return _revCache[k]; let rev=0; const src=D.row[ver][t]||D.row.actual[t]; if(!src) return 0;
+  for(const r of ROWS){ const v=src[r.id]; const b=v.comp*v.occ-v.np; rev+=(b*v.rent*v.real+b*v.svc)/10; } return _revCache[k]=rev; }
+
+// LTM sums
+function ltm(L,t,ver,key,sc){ let s=0; for(let i=t-11;i<=t;i++){ const S=aggregate(L,i,ver,i===t?sc:null); if(!S||S[key]==null) return null; s+=S[key]; } return s; }
+
+
+</script>
+<script>
+// ===== UI =====
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const MINUS='\u2212';
+function rs(v,dp){ if(v==null||!isFinite(v)) return '–'; return (v<0?MINUS:'')+'₹'+num(Math.abs(v),dp); }
+const PARK_L=Object.fromEntries(PARKS.map(p=>[p.k,p.l]));
+const FMT_L=Object.fromEntries(FORMATS.map(f=>[f.k,f.l]));
+const SEG_L=Object.fromEntries(SEGMENTS.map(s=>[s.k,s.l]));
+SEG_L.ecom='E-commerce';
+
+const state={ view:'tree', t:LAST_ACTUAL, cmp:'budget', L:{format:null,region:null,park:null,seg:null}, tab:'pat',
+  collapsed:{billed:true, ovh:true}, zoom:{}, sel:null, bridgeOpen:{}, alertSel:null, alertFilter:'all', alertTab:'feed',
+  sc:{lag:0,bill:0,rent:0,occ:0,late:0,rate:0}, preset:null, treeSc:null, convo:[], rpFilter:'all' };
+
+// ---------- values ----------
+const cache=new Map();
+function vals(L,t,ver,sc){ if(t<0) return null; const key=JSON.stringify([L,t,ver,sc||0]); if(cache.has(key)) return cache.get(key);
+  const S=aggregate(L,t,ver,sc); if(S && S.valid.co){ const pl=t>=11? ltm(L,t,ver,'pat',sc):null, el=t>=11? ltm(L,t,ver,'ebitda',sc):null;
+    S.patLTM=pl; S.ebitdaLTM=el; S.eps= pl!=null? pl/S.shares : null; S.nde = el? S.netDebt/el : null; }
+  if(S && S.valid.park){ S.rentLate = S.lateA? S.rentLost*10/S.lateA : null; }
+  cache.set(key,S); return S; }
+function cmpOf(L,t,mode,sc){ mode=mode||state.cmp; if(mode==='budget') return vals(L,t,'budget'); if(mode==='ly') return t>=12? vals(L,t-12,'actual'):null; return t>=1? vals(L,t-1,'actual'):null; }
+const CMP_L={budget:'Budget',ly:'Last year',lm:'Last month'};
+function curS(){ return vals(state.L,state.t,'actual',state.treeSc); }
+function cmpS(){ return state.treeSc? vals(state.L,state.t,'actual') : cmpOf(state.L,state.t); }
+function cmpLabel(){ return state.treeSc? 'Base' : CMP_L[state.cmp]; }
+
+// ---------- node dictionary ----------
+const N={
+ pat:{l:'PAT',u:'cr',g:'co',dir:1,v:S=>S.pat,d:'Profit after tax for the month: what is left for shareholders after every cost, interest and tax.',f:'PBT − tax',o:'CFO',s:'Monthly close, consolidated'},
+ pbt:{l:'PBT',u:'cr',g:'co',dir:1,v:S=>S.pbt,d:'Profit before tax. For Horizon it turns on whether park earnings cover depreciation and interest on the build programme.',f:'EBITDA − depreciation − finance cost',o:'CFO',s:'Monthly close'},
+ tax:{l:'Tax',u:'cr',g:'co',dir:-1,v:S=>S.tax,d:'Tax charged in the month, mostly minimum and deferred tax while the group is loss making.',f:'From the tax computation',o:'Head, Tax',s:'Tax schedule'},
+ ebitda:{l:'EBITDA',u:'cr',g:'co',dir:1,v:S=>S.ebitda,d:'Earnings before interest, tax, depreciation and amortisation, as Horizon reports it (other income included).',f:'Park NOI + other income − corporate overheads',o:'CFO',s:'Monthly close'},
+ da:{l:'Depreciation and amortisation',u:'cr',g:'co',dir:-1,v:S=>S.da,d:'Cost of buildings spread over their life. Rises as each new block is finished.',f:'Fixed asset register',o:'Financial controller',s:'Fixed asset register'},
+ fin:{l:'Finance cost',u:'cr',g:'co',dir:-1,v:S=>S.fin,d:'Interest on borrowings. Fell after the IPO repaid debt; rises again as new loans fund construction.',f:'Debt × interest rate',o:'Treasurer',s:'Loan schedules'},
+ noi:{l:'Park NOI',u:'cr',g:'park',dir:1,v:S=>S.noi,d:'Net operating income of the parks: revenue less the cost of running them. Known for each park.',f:'Revenue − park running cost',o:'Head, Asset management',s:'Park P&L'},
+ oi:{l:'Other income',u:'cr',g:'co',dir:1,v:S=>S.oi,d:'Interest on deposits and one-off gains. Not part of the park business.',f:'Treasury income + other',o:'Treasurer',s:'Monthly close'},
+ ovh:{l:'Corporate overheads',u:'cr',g:'co',dir:-1,v:S=>S.ovh,d:'Head office staff and costs not tied to any park.',f:'Staff cost + other overheads',o:'CFO',s:'Monthly close'},
+ emp:{l:'Head office staff',u:'cr',g:'co',dir:-1,v:S=>S.emp,d:'Salaries and benefits of the corporate team.',f:'Payroll',o:'CHRO',s:'Payroll'},
+ oexp:{l:'Other overheads',u:'cr',g:'co',dir:-1,v:S=>S.oexp,d:'Professional fees, marketing, listing and office costs.',f:'General ledger',o:'Financial controller',s:'General ledger'},
+ rev:{l:'Revenue',u:'cr',g:'row',dir:1,v:S=>S.rev,d:'Rent billed plus income from maintenance and other services.',f:'Rental income + services income',o:'CFO',s:'Billing system'},
+ popex:{l:'Park running cost',u:'cr',g:'park',dir:-1,v:S=>S.popex,d:'Maintenance, security, property tax and insurance at each park.',f:'Sum of park costs',o:'Park heads',s:'Park cost centres'},
+ rental:{l:'Rental income',u:'cr',g:'row',dir:1,v:S=>S.rental,d:'Rent billed to tenants in the month.',f:'Billed space × rent per sq ft × share of rent billed',o:'Head, Billing',s:'Billing system'},
+ svc:{l:'Services income',u:'cr',g:'row',dir:1,v:S=>S.svc,d:'Maintenance charges, power and other services billed to tenants.',f:'Billed space × services per sq ft',o:'Head, Facility services',s:'Billing system'},
+ billed:{l:'Billed space',u:'msf',g:'row',dir:1,v:S=>S.billed,d:'Space that is leased and already paying rent.',f:'Leased space − leased, not yet paying',o:'Head, Leasing',s:'Lease register'},
+ rent:{l:'Rent per sq ft',u:'psf',g:'row',dir:1,v:S=>S.rent,d:'Average rent owed per sq ft per month on billed space. Moves with contract escalations (4.5 to 5% a year), re-leasing at higher rent and the mix of InCity space.',f:'Rent owed ÷ billed space',o:'Head, Leasing',s:'Lease register'},
+ real:{l:'Share of rent billed',u:'pct',g:'row',dir:1,v:S=>S.real,d:'Rent actually billed as a share of rent owed under the leases. Missed escalations and charges show up here.',f:'Rent billed ÷ rent owed',o:'Head, Billing',s:'Lease register vs billing system'},
+ leased:{l:'Leased space',u:'msf',g:'row',dir:1,v:S=>S.leased,d:'Finished space with a signed lease.',f:'Finished space × committed occupancy',o:'Head, Leasing',s:'Lease register'},
+ np:{l:'Leased, not yet paying',u:'msf',g:'row',dir:-1,v:S=>S.np,d:'Signed space still in fit-out or rent-free. The board deck puts the gap between a finished building and first rent at about 3 months.',f:'Leased space − billed space',o:'Head, Leasing',s:'Lease register'},
+ comp:{l:'Finished space',u:'msf',g:'row',dir:1,v:S=>S.comp,d:'Completed, leasable space at month end.',f:'Opening space + buildings finished',o:'Head, Projects',s:'Project register'},
+ occ:{l:'Committed occupancy',u:'pct',g:'row',dir:1,v:S=>S.occ,d:'Share of finished space under a signed lease.',f:'Leased space ÷ finished space',o:'Head, Leasing',s:'Lease register'},
+ // cash
+ fcf:{l:'Free cash flow',u:'cr',g:'co',dir:1,v:S=>S.fcf,d:'Cash left after running the parks, building new ones and paying interest. Negative while the build programme runs.',f:'Cash from operations − development spend − interest paid',o:'CFO',s:'Cash flow statement'},
+ cfo:{l:'Cash from operations',u:'cr',g:'co',dir:1,v:S=>S.cfo,d:'Cash the parks generate after tax and working capital.',f:'EBITDA − tax paid − change in working capital',o:'CFO',s:'Cash flow statement'},
+ c_ebitda:{ref:'ebitda'}, c_tax:{ref:'tax',l:'Tax paid',note:'taken as the tax charge'}, c_int:{ref:'fin',l:'Interest paid',note:'equal to finance cost'},
+ wcChg:{l:'Change in working capital',u:'cr',g:'co',dir:-1,v:S=>S.wcChg,d:'Cash tied up when tenants pay later. Driven mainly by debtor days.',f:'Receivables now − receivables last month',o:'Credit head',s:'Receivables ledger'},
+ dd:{l:'Debtor days',u:'days',g:'co',dir:-1,v:S=>S.dd,d:'Days of revenue owed by tenants and not yet collected.',f:'Receivables ÷ revenue × 30',o:'Credit head',s:'Receivables ledger'},
+ capex:{l:'Development spend',u:'cr',g:'park',dir:-1,v:S=>S.capex,d:'Cash spent on buildings under construction. Spending below plan usually means a building is running late.',f:'Contractor payments + materials',o:'Head, Projects',s:'Project accounts'},
+ netDebt:{l:'Net debt',u:'cr',g:'co',dir:-1,v:S=>S.netDebt,d:'Borrowings less cash. About ₹2,500 cr after the IPO.',f:'Gross debt − cash',o:'Treasurer',s:'Treasury'},
+ // capital
+ roce:{l:'Return on capital',u:'pct',g:'co',dir:1,v:S=>S.roce,d:'Operating profit a year as a share of all capital tied up, including buildings not yet earning.',f:'Annual operating profit ÷ capital employed',o:'CFO',s:'Monthly close'},
+ ebitAnn:{l:'Operating profit, a year',u:'cr',g:'co',dir:1,v:S=>S.ebitAnn,d:'EBITDA less depreciation, at this month’s rate for a full year.',f:'(EBITDA − depreciation) × 12',o:'CFO',s:'Monthly close'},
+ r_ebitda:{ref:'ebitda'}, r_da:{ref:'da'},
+ capEmp:{l:'Capital employed',u:'cr',g:'co',dir:-1,v:S=>S.capEmp,d:'All money tied up in the business.',f:'Operating parks + capital not yet earning + working capital',o:'CFO',s:'Balance sheet'},
+ opA:{l:'Operating parks, at cost',u:'cr',g:'park',dir:-1,v:S=>S.opA,d:'What the finished buildings cost to build or buy.',f:'Fixed asset register',o:'Financial controller',s:'Fixed asset register'},
+ cwip:{l:'Capital not yet earning',u:'cr',g:'park',dir:-1,v:S=>S.cwip,d:'Buildings under construction and land being developed. Earns nothing until finished and leased.',f:'Work in progress + land under development',o:'Head, Projects',s:'Project accounts'},
+ wc:{l:'Working capital',u:'cr',g:'co',dir:-1,v:S=>S.wc,d:'Money owed by tenants, net of payables.',f:'Debtor days ÷ 30 × revenue',o:'Credit head',s:'Receivables ledger'},
+ yoc:{l:'Yield on cost',u:'pct',g:'park',dir:1,v:S=>S.yoc,d:'Park NOI a year as a share of what the parks cost. The cleanest way to compare parks.',f:'Park NOI × 12 ÷ operating parks at cost',o:'Head, Asset management',s:'Park P&L'},
+ rentLost:{l:'Rent lost to late buildings',u:'cr',g:'park',dir:-1,v:S=>S.rentLost,d:'Rent the late buildings would have earned this month if finished on plan. The deck puts it at about ₹2.75 cr a month for every 1M sq ft late.',f:'Space running late × planned rent per sq ft',o:'Head, Projects',s:'Project register + leases'},
+ lateA:{l:'Space running late',u:'msf',g:'park',dir:-1,v:S=>S.lateA,d:'Space planned to be finished by now but not yet handed over.',f:'Planned this year to date − finished this year to date',o:'Head, Projects',s:'Project register'},
+ planYTD:{l:'Planned to finish, year to date',u:'msf',g:'park',dir:1,v:S=>S.planYTD,d:'Space the FY27 plan expected to finish by this month.',f:'From the development plan',o:'Head, Projects',s:'Development plan'},
+ delYTD:{l:'Finished, year to date',u:'msf',g:'park',dir:1,v:S=>S.delYTD,d:'Space actually handed over this financial year.',f:'Completion certificates',o:'Head, Projects',s:'Project register'},
+ rentLate:{l:'Planned rent per sq ft',u:'psf',g:'park',dir:1,v:S=>S.rentLate,d:'Rent the late space was expected to earn.',f:'From pre-leases and plan',o:'Head, Leasing',s:'Lease register'},
+ daysLate:{l:'Average days late',u:'days',g:'park',dir:-1,v:S=>S.daysLate,d:'How far behind plan the late buildings are.',f:'Weighted by space late',o:'Head, Projects',s:'Project register'},
+ // investor
+ eps:{l:'EPS, last 12 months',u:'rs',g:'co',dir:1,v:S=>S.eps,d:'Profit after tax per share over the last 12 months.',f:'PAT, last 12 months ÷ shares',o:'CFO',s:'Monthly close'},
+ patLTM:{l:'PAT, last 12 months',u:'cr',g:'co',dir:1,v:S=>S.patLTM,d:'Sum of the last 12 monthly PATs.',f:'Sum of monthly PAT',o:'CFO',s:'Monthly close'},
+ shares:{l:'Shares',u:'crn',g:'co',dir:-1,v:S=>S.shares,d:'Shares in issue, in crore. Illustrative.',f:'Share register',o:'Company secretary',s:'Share register'},
+ nde:{l:'Net debt to EBITDA',u:'x',g:'co',dir:-1,v:S=>S.nde,d:'Years of EBITDA needed to repay net debt. Lenders and rating agencies watch it.',f:'Net debt ÷ EBITDA, last 12 months',o:'Treasurer',s:'Treasury + close'},
+ i_nd:{ref:'netDebt'},
+ ebitdaLTM:{l:'EBITDA, last 12 months',u:'cr',g:'co',dir:1,v:S=>S.ebitdaLTM,d:'Sum of the last 12 monthly EBITDAs.',f:'Sum of monthly EBITDA',o:'CFO',s:'Monthly close'},
+ icov:{l:'Interest cover',u:'x',g:'co',dir:1,v:S=>S.icov,d:'How many times EBITDA covers interest. Below 2x leaves little room.',f:'EBITDA ÷ finance cost',o:'Treasurer',s:'Monthly close'},
+ i_ebitda:{ref:'ebitda'}, i_fin:{ref:'fin'},
+};
+function nd(id){ const n=N[id]; if(n&&n.ref){ return {...N[n.ref],...n,id,refId:n.ref,isRef:true}; } return {...n,id}; }
+
+const TREES={
+ pat:{title:'PAT tree',sub:'From space and rent to profit',roots:[{id:'pat',label:'Profit after tax'}],
+   ch:{pat:[['pbt','+'],['tax','−']],pbt:[['ebitda','+'],['da','−'],['fin','−']],ebitda:[['noi','+'],['oi','+'],['ovh','−']],ovh:[['emp','+'],['oexp','+']],noi:[['rev','+'],['popex','−']],rev:[['rental','+'],['svc','+']],rental:[['billed','×'],['rent','×'],['real','×']],billed:[['leased','+'],['np','−']],leased:[['comp','×'],['occ','×']]}},
+ cash:{title:'Cash tree',sub:'Where the cash went',roots:[{id:'fcf',label:'Free cash flow'},{id:'netDebt',label:'Net debt'}],
+   ch:{fcf:[['cfo','+'],['capex','−'],['c_int','−']],cfo:[['c_ebitda','+'],['c_tax','−'],['wcChg','−']],wcChg:[['dd','+']]}},
+ roce:{title:'Returns tree',sub:'Is the capital earning its keep',roots:[{id:'roce',label:'Return on capital'},{id:'yoc',label:'Yield on cost'}],
+   ch:{roce:[['ebitAnn','÷'],['capEmp','÷']],ebitAnn:[['r_ebitda','+'],['r_da','−']],capEmp:[['opA','+'],['cwip','+'],['wc','+']]}},
+ deliv:{title:'Delivery tree',sub:'Rent lost to buildings finished late',roots:[{id:'rentLost',label:'Rent lost this month'},{id:'daysLate',label:'Days late'}],
+   ch:{rentLost:[['lateA','×'],['rentLate','×']],lateA:[['planYTD','+'],['delYTD','−']]}},
+ inv:{title:'Investor tree',sub:'What shareholders and lenders read',roots:[{id:'eps',label:'Earnings per share'},{id:'nde',label:'Leverage'},{id:'icov',label:'Interest cover'}],
+   ch:{eps:[['patLTM','÷'],['shares','÷']],nde:[['i_nd','÷'],['ebitdaLTM','÷']],icov:[['i_ebitda','÷'],['i_fin','÷']]}},
+};
+const TABS={pat:{l:'PAT and cash',trees:['pat','cash']},cap:{l:'Capital and returns',trees:['roce','deliv']},inv:{l:'Investor',trees:['inv']}};
+
+// ---------- formatting ----------
+function num(v,dp){ if(v==null||!isFinite(v)) return '–'; const s=Math.abs(v).toLocaleString('en-IN',{minimumFractionDigits:dp,maximumFractionDigits:dp}); return (v<0?MINUS:'')+s; }
+function fv(u,v){ if(v==null||!isFinite(v)) return {m:'–',s:''};
+  switch(u){ case 'cr': return {m:num(v,1),s:'Cr'}; case 'msf': return {m:num(v,2),s:'M sq ft'}; case 'psf': return {m:'Rs '+num(v,1),s:'/sq ft'};
+   case 'pct': return {m:num(v*100,1)+'%',s:''}; case 'days': return {m:num(v,0),s:'days'}; case 'x': return {m:num(v,2)+'x',s:''}; case 'rs': return {m:'Rs '+num(v,2),s:''}; case 'crn': return {m:num(v,0),s:'Cr'}; }
+  return {m:num(v,1),s:''}; }
+function fvs(u,v){ const x=fv(u,v); return x.s && x.s!=='Cr'? x.m+' '+x.s.replace(/^\//,'per '): x.m+(x.s==='Cr'?' Cr':''); }
+function delta(u,a,b,dir){ if(a==null||b==null||!isFinite(a)||!isFinite(b)) return {txt:'',cls:'flat'};
+  const d=a-b; let txt;
+  if(u==='pct'){ txt=(d>=0?'+':MINUS)+num(Math.abs(d*100),1)+' pts'; }
+  else { const dp = u==='msf'||u==='x'||u==='rs'? 2 : (u==='days'||u==='crn'?0:1); const abs=(d>=0?'+':MINUS)+num(Math.abs(d),dp).replace(MINUS,'');
+    let pc; if(Math.abs(b)<1e-9 || (a<0)!==(b<0) || b<0) pc='n.m.'; else pc=(d>=0?'+':MINUS)+num(Math.abs(d/b*100),1)+'%'; txt=abs+' '+pc; }
+  const rel = u==='pct'? Math.abs(d)/0.1 : Math.abs(d)/Math.max(Math.abs(b),1e-9);
+  const flatLim = u==='pct'? 0.003/0.1 : 0.03;
+  const cls = rel<flatLim? 'flat' : (d*dir>0?'good':'bad');
+  return {txt,cls,d}; }
+
+// ---------- filters ----------
+const ICONS={tree:'<svg viewBox="0 0 24 24"><path d="M4 5v14M4 12h6M10 7h4M10 17h4M10 7v10M14 7h6M14 17h6"/></svg>',
+ sc:'<svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg>',
+ rp:'<svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6"/></svg>',
+ ask:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4zM8 9h8M8 12h5"/></svg>',
+ al:'<svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4zM10 21h4"/></svg>'};
+function renderNav(){ const al=alertsFor(state.t).filter(a=>a.status==='open'||a.status==='esc').length;
+  $('#nav').innerHTML=[['tree','Value tree'],['sc','Scenarios'],['rp','Reports'],['ask','Ask'],['al','Alerts']].map(([k,l])=>`<button class="${state.view===k?'on':''}" data-v="${k}">${ICONS[k]}<span class="lab">${l}</span>${k==='al'&&al?`<span class="badge">${al}</span>`:''}</button>`).join('');
+  $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>{ state.view=b.dataset.v; renderAll(); window.scrollTo(0,0); }); }
+function opt(v,l,cur){ return `<option value="${v}" ${cur===v?'selected':''}>${esc(l)}</option>`; }
+function renderFilters(){ const L=state.L;
+  const months=MONTHS.slice(0,LAST_ACTUAL+1).slice().reverse();
+  const parks=PARKS.filter(p=>!L.region||p.r===L.region);
+  const segs=SEGMENTS.filter(s=>!L.format||s.f===L.format||(L.format==='city'&&['ecom','logc','retail'].includes(s.k)));
+  $('#filters').innerHTML=`
+   <div class="sel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color:var(--mute)"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><select id="fMonth" aria-label="Month">${months.map(m=>opt(String(m.i),m.label,String(state.t))).join('')}</select></div>
+   <div class="seg" role="group" aria-label="Compare with"><span>vs</span>${['budget','ly','lm'].map(k=>`<button data-c="${k}" class="${state.cmp===k?'on':''}">${CMP_L[k]}</button>`).join('')}</div>
+   <div class="sel"><label for="fFormat">Format</label><select id="fFormat">${opt('','All',L.format||'')}${FORMATS.map(f=>opt(f.k,f.l,L.format)).join('')}</select></div>
+   <div class="sel"><label for="fRegion">Region</label><select id="fRegion">${opt('','All',L.region||'')}${REGIONS.map(r=>opt(r,r,L.region)).join('')}</select></div>
+   <div class="sel"><label for="fPark">Park</label><select id="fPark">${opt('','All',L.park||'')}${parks.map(p=>opt(p.k,p.l,L.park)).join('')}</select></div>
+   <div class="sel"><label for="fSeg">Tenant</label><select id="fSeg">${opt('','All',L.seg||'')}${segs.map(s=>opt(s.k,s.l,L.seg)).join('')}</select></div>`;
+  $('#fMonth').onchange=e=>{state.t=+e.target.value; renderAll();};
+  $('#filters').querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{state.cmp=b.dataset.c; renderAll();});
+  $('#fFormat').onchange=e=>{state.L.format=e.target.value||null; if(state.L.seg && SEGMENTS.find(s=>s.k===state.L.seg).f!==state.L.format && state.L.format!=='city') state.L.seg=null; renderAll();};
+  $('#fRegion').onchange=e=>{state.L.region=e.target.value||null; if(state.L.park&&PARK_BY[state.L.park].r!==state.L.region) state.L.park=null; renderAll();};
+  $('#fPark').onchange=e=>{state.L.park=e.target.value||null; if(state.L.park) state.L.region=PARK_BY[state.L.park].r; renderAll();};
+  $('#fSeg').onchange=e=>{state.L.seg=e.target.value||null; renderAll();};
+}
+function lensText(){ const L=state.L, parts=[];
+  if(L.park) parts.push(PARK_L[L.park]); else if(L.region) parts.push(L.region);
+  if(L.format) parts.push(FMT_L[L.format]); if(L.seg) parts.push(SEG_L[L.seg]); return parts.join(', '); }
+function lensNote(){ const lv=lensLevel(state.L); const t=lensText(); if(!t) return '';
+  const known = lv.co? '' : lv.park? 'Boxes down to park NOI are worked out for this view. Company costs, interest and tax are only known for Horizon as a whole, so they are greyed.' : 'Only boxes known for each park, format and tenant type are worked out (down to revenue). Park running cost is only known per park, so everything above revenue is greyed. Nothing is allocated.';
+  return `<div class="lens-note">Showing <b>${esc(t)}</b>. ${known} <button id="clrLens">Show whole company</button></div>`; }
+
+// ---------- KPI strip ----------
+function spark(fn){ const pts=[]; for(let i=Math.max(0,state.t-11);i<=state.t;i++){ const S=vals(state.L,i,'actual'); const v=S?fn(S):null; if(v!=null&&isFinite(v)) pts.push(v); }
+  if(pts.length<2) return ''; const mn=Math.min(...pts),mx=Math.max(...pts),r=mx-mn||1; const w=86,h=30;
+  const d=pts.map((v,i)=>`${(i/(pts.length-1)*w).toFixed(1)},${(h-(v-mn)/r*h+2).toFixed(1)}`).join(' ');
+  const last=d.split(' ').pop().split(',');
+  return `<svg viewBox="0 0 ${w} ${h+4}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="var(--ink)" stroke-width="1.6"/><circle cx="${last[0]}" cy="${last[1]}" r="2.6" fill="var(--ink)"/></svg>`; }
+function renderKPIs(){ const S=curS(), C=cmpS(); const lv=S.valid;
+  const K=[['rev','Revenue',S=>S.rev,'row'],['margin','EBITDA margin',S=>S.margin,'co','pct',1],['pat','PAT',S=>S.pat,'co'],['occ','Committed occupancy',S=>S.occ,'row'],['rent','Rent per sq ft',S=>S.rent,'row'],['real','Share of rent billed',S=>S.real,'row']];
+  return `<div class="kpis">${K.map(([id,l,fn,g,u0,dir0])=>{ const ok = g==='row'||lv.co; const n=N[id]||{}; const u=u0||n.u, dir=dir0||n.dir;
+    if(!ok) return `<div class="kpi na"><div class="t">${l}</div><div class="v">Company only</div><div class="c">Clear the filter to see it</div></div>`;
+    const a=fn(S), b=C?fn(C):null; const dl=delta(u,a,b,dir); const x=fv(u,a);
+    return `<button class="kpi ${dl.cls}" data-node="${N[id]?id:'ebitda'}"><div class="t">${l}</div><div class="v">${x.m}${x.s&&u!=='pct'?`<small style="font-size:14px;color:var(--mute);font-weight:500"> ${x.s==='Cr'?'Cr':x.s}</small>`:''}</div><div class="c">${cmpLabel()} ${b!=null?fv(u,b).m:'–'}</div><div class="d ${dl.cls}-t">${dl.txt.split(' ')[0]||''}</div>${spark(fn)}</button>`; }).join('')}</div>`; }
+
+// ---------- tree layout & render ----------
+const W=196,H=94,CG=46,RG=14;
+function countDesc(def,id){ const c=def.ch[id]||[]; return c.reduce((a,[k])=>a+1+countDesc(def,k),0); }
+function layoutTree(def){ const nodes=[], edges=[], labels=[]; let y=0; let maxD=0;
+  function place(id,d,op,parent){ const kids=(def.ch[id]||[]); const col=state.collapsed[id]; const n={id,d,x:d*(W+CG),op,parent,kids:kids.length,collapsed:!!col};
+    maxD=Math.max(maxD,d); nodes.push(n);
+    if(kids.length && !col){ let first=true; for(const [k,o] of kids){ const c=place(k,d+1,o,n); if(first){ n.y=c.y; first=false; } edges.push([n,c]); } }
+    else { n.y=y; y+=H+RG; }
+    return n; }
+  def.roots.forEach((r,i)=>{ labels.push({y,text:r.label}); y+=24; place(r.id,0,null,null); y+=18; });
+  return {nodes,edges,labels,w:(maxD+1)*(W+CG)-CG+40,h:y}; }
+function nodeHTML(n,S,C){ const meta=nd(n.id); const lv=S.valid; const g=meta.g;
+  const valid = g==='row' || (g==='park'&&lv.park) || (g==='co'&&lv.co);
+  const sel = state.sel===n.id? ' sel':'';
+  const style=`left:${n.x}px;top:${n.y}px`;
+  if(!valid){ const why = g==='co'? 'Company only. Not known for this view.' : 'Known for each park only. Not known for this view.';
+    return `<div class="node off" style="${style}" title="${esc(why)}"><div class="n">${esc(meta.l)}</div><div class="val">${why}</div></div>`; }
+  const a=meta.v(S), b=C?meta.v(C):null; const dl=delta(meta.u,a,b,meta.dir); const x=fv(meta.u,a);
+  const alt = n.d%2===1? ' alt':''; const ref=meta.isRef?' ref':'';
+  return `<button class="node ${dl.cls}${alt}${ref}${sel}" style="${style}" data-node="${meta.isRef?meta.refId:n.id}" aria-label="${esc(meta.l)}">${meta.isRef?'<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><path d="M10 14l6-6M11 8h5v5"/></svg>':''}<div class="n">${esc(meta.l)}</div><div class="val">${x.m}${x.s?`<small>${x.s}</small>`:''}</div><div class="ft"><span>${cmpLabel()} ${b!=null?fv(meta.u,b).m:'–'}</span>${dl.txt?`<span class="dchip ${dl.cls}">${dl.txt}</span>`:''}</div></button>`; }
+function treePanel(key){ const def=TREES[key]; const L=layoutTree(def); const S=curS(), C=cmpS();
+  let svg='', ops='', togs='', notes='';
+  for(const [p,c] of L.edges){ const sx=p.x+W+CG/2, py=p.y+H/2, cy=c.y+H/2;
+    svg+=`<path d="M${p.x+W} ${py} H${sx} V${cy} H${c.x}" fill="none" stroke="var(--line)" stroke-width="1.4"/>`;
+    ops+=`<div class="op" style="left:${sx-10}px;top:${cy-10}px">${c.op}</div>`;
+    const m=nd(c.id); if(m.note) notes+=`<div class="edge-note" style="left:${c.x}px;top:${c.y-17}px">${m.note}</div>`; }
+  for(const n of L.nodes){ if(n.kids){ const lab=n.collapsed? '+'+countDesc(def,n.id) : MINUS; togs+=`<button class="tog" data-tog="${n.id}" style="left:${n.x+W-11}px;top:${n.y+H/2+16}px" aria-label="${n.collapsed?'Expand':'Collapse'} ${esc(nd(n.id).l)}">${lab}</button>`; } }
+  const labels=L.labels.map(l=>`<div class="col-label" style="left:0;top:${l.y}px">${esc(l.text.toUpperCase())}</div>`).join('');
+  const z=state.zoom[key]; 
+  return `<section class="panel" data-tree="${key}"><div class="panel-h"><span class="sq" style="background:${key==='cash'||key==='deliv'?'var(--good)':'var(--ink)'}"></span><h2>${def.title}</h2><span class="sub">${def.sub}</span></div>
+   <div class="tree-wrap" id="tw-${key}"><div class="tree-inner" id="ti-${key}" style="width:${L.w}px;height:${L.h}px" data-w="${L.w}" data-h="${L.h}"><svg class="tree-svg" width="${L.w}" height="${L.h}">${svg}</svg>${labels}${notes}${L.nodes.map(n=>nodeHTML(n,S,C)).join('')}${ops}${togs}</div></div>
+   <div class="zoom"><button data-z="expand">Expand all</button><button data-z="reset">Reset</button><i></i><button data-z="fit">Fit</button><button data-z="out" aria-label="Zoom out">${MINUS}</button><span id="zp-${key}">100%</span><button data-z="in" aria-label="Zoom in">+</button></div></section>`; }
+function applyZoom(key){ const inner=$('#ti-'+key), wrap=$('#tw-'+key); if(!inner||!wrap) return;
+  const w=+inner.dataset.w, h=+inner.dataset.h; let z=state.zoom[key];
+  if(z==null||z==='fit'){ const avail=wrap.clientWidth-40; z=Math.max(.72,Math.min(1,avail/w)); }
+  inner.style.transform=`scale(${z})`; inner.style.width=w+'px'; inner.style.height=h+'px';
+  inner.parentElement.style.height=(h*z+90)+'px'; inner.style.marginRight=(-(w*(1-z)))+'px'; inner.style.marginBottom=(-(h*(1-z)))+'px';
+  const zp=$('#zp-'+key); if(zp) zp.textContent=Math.round(z*100)+'%'; wrap.dataset.z=z; }
+function bindTree(root){ root.querySelectorAll('[data-node]').forEach(el=>el.onclick=()=>openNode(el.dataset.node));
+  root.querySelectorAll('[data-tog]').forEach(el=>el.onclick=e=>{ e.stopPropagation(); const id=el.dataset.tog; state.collapsed[id]=!state.collapsed[id]; renderPage(); });
+  root.querySelectorAll('.panel[data-tree]').forEach(p=>{ const key=p.dataset.tree; p.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>{ const wrap=$('#tw-'+key); const cz=+wrap.dataset.z||1;
+    const a=b.dataset.z; if(a==='fit') state.zoom[key]='fit'; else if(a==='in') state.zoom[key]=Math.min(1.4,cz+.1); else if(a==='out') state.zoom[key]=Math.max(.3,cz-.1);
+    else if(a==='expand'){ Object.keys(TREES[key].ch).forEach(k=>state.collapsed[k]=false); renderPage(); return; }
+    else if(a==='reset'){ state.collapsed={billed:true,ovh:true}; state.zoom[key]='fit'; renderPage(); return; }
+    applyZoom(key); }); }); }
+
+// ---------- bridge ----------
+function rowV(r,t,ver,sc){ const v=getRow(ver,t,r,sc); if(!v) return null; const leased=v.comp*v.occ, billed=leased-v.np; return {...v,leased,billed}; }
+function bridge(L,t,mode,sc){ // returns steps from comparison to actual
+  const lv=lensLevel(L); const A={t,ver:'actual',sc}; let B;
+  if(sc) B={t,ver:'actual',sc:null}; else if(mode==='budget') B={t,ver:'budget'}; else if(mode==='ly'){ if(t<12) return null; B={t:t-12,ver:'actual'}; } else { if(t<1) return null; B={t:t-1,ver:'actual'}; }
+  const keys=['area','occ','lag','rent','bill','svc']; const steps={}; keys.forEach(k=>steps[k]={v:0,by:{}});
+  const add=(k,p,v)=>{ steps[k].v+=v; steps[k].by[p]=(steps[k].by[p]||0)+v; };
+  for(const r of ROWS){ if(!rowMatch(r,L)) continue; const a=rowV(r,A.t,A.ver,A.sc), b=rowV(r,B.t,B.ver,B.sc); if(!a||!b) continue;
+    const kB=(b.rent*b.real+b.svc)/10;
+    add('area',r.park,(a.comp-b.comp)*b.occ*kB); add('occ',r.park,a.comp*(a.occ-b.occ)*kB); add('lag',r.park,-(a.np-b.np)*kB);
+    add('rent',r.park,a.billed*(a.rent-b.rent)*b.real/10); add('bill',r.park,a.billed*a.rent*(a.real-b.real)/10); add('svc',r.park,a.billed*(a.svc-b.svc)/10); }
+  const SA=vals(L,A.t,'actual',A.sc), SB=vals(L,B.t,B.ver,B.sc);
+  const lab={area:'Finished space',occ:'Occupancy',lag:'Leased, not yet paying',rent:'Rent per sq ft',bill:'Rent billed vs owed',svc:'Services income'};
+  const out=keys.map(k=>({k,l:lab[k],v:steps[k].v,by:steps[k].by}));
+  let metric='Revenue', a=SA.rev, b=SB.rev;
+  if(lv.park){ const by={}; for(const p of PARKS){ if(!parkMatch(p.k,L)) continue; by[p.k]=-(D.park.actual[A.t][p.k].opex-(D.park[B.ver][B.t][p.k].opex)); }
+    out.push({k:'popex',l:'Park running cost',v:-(SA.popex-SB.popex),by}); metric='Park NOI'; a=SA.noi; b=SB.noi; }
+  if(lv.co){ out.push({k:'oi',l:'Other income',v:SA.oi-SB.oi,by:{}}); out.push({k:'ovh',l:'Corporate overheads',v:-(SA.ovh-SB.ovh),by:{}}); metric='EBITDA'; a=SA.ebitda; b=SB.ebitda; }
+  return {metric,a,b,steps:out}; }
+function bridgeBox(){ const L=state.L; const br=bridge(L,state.t,state.cmp,state.treeSc); const lbl=cmpLabel();
+  if(!br) return `<div class="box"><h3>Bridge</h3><div class="empty">No ${lbl.toLowerCase()} figures for this month.</div></div>`;
+  const pts=[br.b]; let run=br.b; br.steps.forEach(s=>{ run+=s.v; pts.push(run); }); pts.push(br.a);
+  const lo=Math.min(...pts), hi=Math.max(...pts); const pad=(hi-lo)*.25||1; const dlo=lo-pad*1.2, dhi=hi+pad*.3; const X=v=>((v-dlo)/(dhi-dlo)*100);
+  let rows=`<div class="bridge-row tot"><div class="lbl">${lbl} ${br.metric}</div><div class="bar-track"><div class="bar tot" style="left:0;width:${X(br.b)}%"></div></div><div class="num">${num(br.b,2)}</div></div>`;
+  run=br.b; for(const s of br.steps){ const x0=X(Math.min(run,run+s.v)), x1=X(Math.max(run,run+s.v)); const open=state.bridgeOpen[s.k]; const has=Object.keys(s.by).length>1;
+    rows+=`<div class="bridge-row"><div class="lbl">${has?`<button data-bo="${s.k}" aria-label="Show parks">${open?MINUS:'+'}</button>`:'<button disabled style="opacity:.3">+</button>'}${s.l}</div><div class="bar-track"><div class="bar ${s.v<0?'neg':'pos'}" style="left:${x0}%;width:${Math.max(.4,x1-x0)}%"></div></div><div class="num ${s.v<0?'bad-t':'good-t'}">${s.v>=0?'+':MINUS}${num(Math.abs(s.v),2)}</div></div>`;
+    if(open&&has){ const top=Object.entries(s.by).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,6); rows+=`<div class="sub-rows">${top.map(([p,v])=>`<div><span>${esc(PARK_L[p])}</span><span class="${v<0?'bad-t':'good-t'}">${v>=0?'+':MINUS}${num(Math.abs(v),2)}</span></div>`).join('')}</div>`; }
+    run+=s.v; }
+  rows+=`<div class="bridge-row tot"><div class="lbl">Actual ${br.metric}</div><div class="bar-track"><div class="bar tot" style="left:0;width:${X(br.a)}%"></div></div><div class="num">${num(br.a,2)}</div></div>`;
+  const sum=br.steps.reduce((x,s)=>x+s.v,0);
+  return `<div class="box"><div class="box-h"><div><h3>${br.metric} bridge</h3><div class="sub">${state.treeSc?'Base to scenario':lbl+' to actual'}, INR crore, exact values from the engine</div></div></div>${rows}
+   <div class="check">Open a step with + to see its parks. Steps add to ${sum>=0?'+':MINUS}${num(Math.abs(sum),2)}. Gap ${num(br.b,2)} to ${num(br.a,2)} is ${br.a-br.b>=0?'+':MINUS}${num(Math.abs(br.a-br.b),2)}.</div></div>`; }
+
+// ---------- alerts ----------
+function alertsFor(t){ const S=vals({},t,'actual'), B=vals({},t,'budget'); const list=[];
+  // A1 billing
+  const bill=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'); return {p,real:a.real,gap:a.owed-a.rental}; }).filter(x=>x.real<.99).sort((a,b)=>b.gap-a.gap);
+  if(bill.length){ const tot=bill.reduce((s,x)=>s+x.gap,0)-bill.reduce((s,x)=>s+vals({park:x.p.k},t,'actual').owed*0.003,0);
+    list.push({id:'A1',rule:'Rent billed below 99% of rent owed',title:bill.slice(0,2).map(x=>`${x.p.l} billed ${num(x.real*100,1)}%`).join('; ')+' of rent owed',owner:'Head, Billing',status:'open',imp:-Math.max(tot,0),impL:'PAT this month',
+      what:`${bill.length} parks billed less than 99% of the rent their leases say is owed. ${bill[0].p.l} is the largest gap at ${rs(bill[0].gap,2)} cr this month. Most of it is missed annual escalations on leases taken over with the FY25 to FY26 acquisitions.`,
+      why:bill.slice(0,4).map(x=>({node:'real',park:x.p.k,l:`${x.p.l}: share of rent billed`,dt:`${num(x.real*100,1)}% against 99.7% plan, ${rs(x.gap,2)} cr not billed`})),
+      so:'Each point of rent billed is worth about ₹0.7 cr a month, roughly ₹8 cr a year. The Rent & Billing Checker reads every lease and flags each missed escalation before the bill goes out.'}); }
+  // A2 lease-up lag
+  if(S.np>B.np*1.1){ const kk=(S.rent*S.real+1.05)/10; const by=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual').np,b:vals({park:p.k},t,'budget').np})).sort((x,y)=>(y.a-y.b)-(x.a-x.b));
+    list.push({id:'A2',rule:'Leased space not yet paying above plan',title:`${num(S.np,2)}M sq ft leased but not paying rent, plan ${num(B.np,2)}M`,owner:'Head, Leasing',status:'esc',stTxt:'Open, escalated to CFO',imp:-(S.np-B.np)*kk,impL:'PAT this month',
+      what:`Space with a signed lease that has not started paying rent is ${num((S.np/B.np-1)*100,0)}% above plan. Fit-out and rent-free periods on new blocks are running longer than the leases assumed.`,
+      why:by.slice(0,4).map(x=>({node:'np',park:x.p.k,l:`${x.p.l}: leased, not yet paying`,dt:`${num(x.a,2)}M sq ft against ${num(x.b,2)}M`})),
+      so:'Renting a building a month sooner on the FY27 to FY28 programme is worth about ₹16 cr a year (board deck). The Leasing & Renewal Tracker tracks each signed lease to its first rent bill.'}); }
+  // A3 delivery
+  const late=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).filter(x=>x.a.lateA>0.01).sort((x,y)=>y.a.rentLost-x.a.rentLost);
+  if(late.length){ list.push({id:'A3',rule:'Building running late against plan',title:late.slice(0,2).map(x=>`${x.p.l} ${num(x.a.lateA,2)}M sq ft, ${num(x.a.daysLate,0)} days late`).join('; '),owner:'Head, Projects',status:'open',imp:-S.rentLost,impL:'rent lost this month',
+      what:`${num(S.lateA,2)}M sq ft planned to finish by ${MONTHS[t].label} is not yet handed over. Each month late costs about ₹2.75 cr of rent per 1M sq ft.`,
+      why:late.slice(0,4).map(x=>({node:'lateA',park:x.p.k,l:`${x.p.l}: space running late`,dt:`${num(x.a.lateA,2)}M sq ft, ${num(x.a.daysLate,0)} days, ${rs(x.a.rentLost,2)} cr a month`})),
+      so:'Development spend is also below plan at these parks, which points to contractor pace rather than approvals. The Construction & Payments Tracker would show which bills and approvals are holding each block.'}); }
+  // A4 occupancy
+  const weak=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).filter(x=>x.a.occ<.86).sort((x,y)=>x.a.occ-y.a.occ);
+  if(weak.length){ const lost=weak.reduce((s,x)=>s+(0.95-x.a.occ)*x.a.comp*x.a.rent/10,0);
+    list.push({id:'A4',rule:'Park occupancy below 86%',title:weak.slice(0,2).map(x=>`${x.p.l} at ${num(x.a.occ*100,0)}%`).join('; ')+' committed',owner:'Head, Leasing',status:'ack',imp:-lost,impL:'rent a month to reach 95%',
+      what:`${weak.length} parks sit well below the portfolio’s ${num(S.occ*100,1)}% committed occupancy.`,
+      why:weak.map(x=>({node:'occ',park:x.p.k,l:`${x.p.l}: committed occupancy`,dt:`${num(x.a.occ*100,1)}% on ${num(x.a.comp,2)}M sq ft finished`})),
+      so:'Each extra point of portfolio occupancy is worth about ₹9.4 cr a year. These parks are where the leasing team’s prospect lists should start.'}); }
+  // A5 debtor days
+  if(S.dd>B.dd+3){ const held=(S.dd-B.dd)/30*S.rev;
+    list.push({id:'A5',rule:'Debtor days above plan',title:`Debtor days ${num(S.dd,0)} against ${num(B.dd,0)}; about ${rs(held,1)} cr held up`,owner:'Credit head',status:'ack',imp:held,impL:'cash held up',cash:true,
+      what:`Tenants are taking ${num(S.dd-B.dd,0)} days longer to pay than plan. That cash is not available for the build programme.`,
+      why:[{node:'dd',l:'Debtor days',dt:`${num(S.dd,0)} days against ${num(B.dd,0)}`},{node:'wcChg',l:'Change in working capital',dt:`${rs(S.wcChg,1)} cr this month`}],
+      so:'Accurate bills get paid faster: disputed escalations are a common reason for late payment. Fixing billing (A1) should pull this back too.'}); }
+  // A6 interest cover
+  if(S.icov<2){ list.push({id:'A6',rule:'Interest cover below 2.0x',title:`Interest cover ${num(S.icov,2)}x; PAT ${S.pat<0?'below zero':'thin'} this month`,owner:'Treasurer',status:'ack',imp:S.pat-B.pat,impL:'PAT vs budget',
+      what:`EBITDA of ${rs(S.ebitda,1)} cr covers interest of ${rs(S.fin,1)} cr ${num(S.icov,2)} times. Profit depends on EBITDA rising faster than new borrowing.`,
+      why:[{node:'ebitda',l:'EBITDA',dt:`${rs(S.ebitda,1)} cr against ${rs(B.ebitda,1)} cr budget`},{node:'fin',l:'Finance cost',dt:`${rs(S.fin,1)} cr against ${rs(B.fin,1)} cr`}],
+      so:'The fastest lever is EBITDA, not interest: the three items above add up to most of the gap to budget PAT.'}); }
+  list.push({id:'A7',rule:'Rent billed below 99% of rent owed',title:'Kothur escalation for two tenants billed after correction',owner:'Head, Billing',status:'closed',imp:0.21,impL:'recovered in August',closed:true,
+    what:'Two Kothur leases missed their April escalation. Billed with arrears in August after the lease review.',why:[{node:'real',park:'kot',l:'Kothur: share of rent billed',dt:'Back to plan'}],so:'Closed. Kept as an example of a recovered gap.'});
+  return list; }
+function stTag(a){ return a.status==='open'?'<span class="tag open">Open</span>':a.status==='esc'?'<span class="tag open">Open, escalated to CFO</span>':a.status==='ack'?'<span class="tag ack">Acknowledged</span>':'<span class="tag closed">Closed</span>'; }
+function impHTML(a){ return `<div class="imp"><b style="${a.cash||a.closed?'':''}color:${a.closed?'var(--good)':'var(--bad)'}">${a.cash||a.closed? '':(a.imp<0?MINUS:'')}${num(Math.abs(a.imp),1)} crore</b><span>${a.impL}</span></div>`; }
+
+// ---------- drawer ----------
+function trendSVG(meta){ const pts=[], bud=[]; const t0=Math.max(0,state.t-11);
+  for(let i=t0;i<=state.t;i++){ const A=vals(state.L,i,'actual'), B=vals(state.L,i,'budget'); pts.push(A?meta.v(A):null); bud.push(B?meta.v(B):null); }
+  const all=[...pts,...bud].filter(v=>v!=null&&isFinite(v)); if(all.length<2) return '';
+  const mn=Math.min(...all), mx=Math.max(...all), r=(mx-mn)||1, w=420, h=120, n=pts.length;
+  const P=arr=>arr.map((v,i)=>v==null?null:`${(i/(n-1)*(w-20)+10).toFixed(1)},${(h-12-(v-mn)/r*(h-30)).toFixed(1)}`).filter(Boolean).join(' ');
+  const labs=[t0,state.t].map((i,j)=>`<text x="${j?w-10:10}" y="${h}" font-size="11" fill="var(--mute)" text-anchor="${j?'end':'start'}">${MONTHS[i].label}</text>`).join('');
+  return `<svg viewBox="0 0 ${w} ${h+4}" style="width:100%;height:auto"><polyline points="${P(bud)}" fill="none" stroke="var(--mute)" stroke-dasharray="4 4" stroke-width="1.4"/><polyline points="${P(pts)}" fill="none" stroke="var(--accent)" stroke-width="2.2"/>${labs}<line x1="${w-170}" y1="8" x2="${w-150}" y2="8" stroke="var(--accent)" stroke-width="2.2"/><text x="${w-145}" y="12" font-size="11" fill="var(--mute)">Actual</text><line x1="${w-90}" y1="8" x2="${w-70}" y2="8" stroke="var(--mute)" stroke-dasharray="4 4" stroke-width="1.4"/><text x="${w-65}" y="12" font-size="11" fill="var(--mute)">Budget</text></svg>`; }
+function splitDims(meta){ const g=meta.g; if(g==='row') return [['park','Park'],['region','Region'],['format','Format'],['seg','Tenant type']]; if(g==='park') return [['park','Park'],['region','Region']]; return []; }
+function dimValues(dim){ const L=state.L; if(dim==='park') return PARKS.filter(p=>parkMatch(p.k,L)).map(p=>[p.k,p.l]); if(dim==='region') return REGIONS.filter(r=>!L.region||r===L.region).map(r=>[r,r]); if(dim==='format') return FORMATS.filter(f=>!L.format||f.k===L.format).map(f=>[f.k,f.l]); return SEGMENTS.filter(s=>!L.seg||s.k===L.seg).map(s=>[s.k,s.l]); }
+let splitDim='park';
+function openNode(id){ state.sel=id; const meta=nd(id); const S=curS(), C=cmpS(); const lv=S.valid;
+  const valid = meta.g==='row'||(meta.g==='park'&&lv.park)||(meta.g==='co'&&lv.co);
+  const grainTxt = meta.g==='row'? 'Known for each park, format and tenant type' : meta.g==='park'? 'Known for each park' : 'Known for Horizon as a whole';
+  $('#dTitle').innerHTML=`<h3>${esc(meta.l)}</h3><div class="tags"><span class="tag rev">${grainTxt}</span>${lensText()?`<span class="tag">${esc(lensText())}</span>`:''}</div>`;
+  let h='';
+  if(!valid){ h+=`<p class="read">This number is not known for <b>${esc(lensText())}</b>. ${meta.g==='co'?'It is only recorded for the company as a whole.':'It is only recorded for each park.'} Clear the filter to see it.</p>`; }
+  else { const a=meta.v(S), b=C?meta.v(C):null; const dl=delta(meta.u,a,b,meta.dir);
+    h+=`<div class="bigv">${fvs(meta.u,a)}</div><div style="color:var(--mute);margin:2px 0 4px">${cmpLabel()} ${b!=null?fvs(meta.u,b):'not available'} ${dl.txt?`<span class="dchip ${dl.cls}">${dl.txt}</span>`:''}</div>`;
+    h+=`<div class="read" style="margin-top:12px">${readFor(id,meta,S,C)}</div>`; }
+  h+=`<dl class="dl"><dt>What it is</dt><dd>${esc(meta.d)}</dd><dt>Worked out as</dt><dd>${esc(meta.f)}</dd><dt>Owner</dt><dd>${esc(meta.o)} <span style="color:var(--mute)">(to confirm)</span></dd><dt>Source</dt><dd>${esc(meta.s)}</dd><dt>Better when</dt><dd>${meta.dir>0?'Higher':'Lower'}</dd></dl>`;
+  if(valid){ h+=`<div class="h4">Last 12 months</div>${trendSVG(meta)}`; }
+  const dims=splitDims(meta);
+  if(valid && dims.length){ if(!dims.find(d=>d[0]===splitDim)) splitDim=dims[0][0];
+    const vs=dimValues(splitDim); const additive=['cr','msf'].includes(meta.u);
+    let rows=vs.map(([k,l])=>{ const L2={...state.L,[splitDim]:k}; if(splitDim==='park') L2.region=PARK_BY[k].r; const a=vals(L2,state.t,'actual',state.treeSc); if(!a||a.comp<1e-6) return null; const b=state.treeSc? vals(L2,state.t,'actual') : cmpOf(L2,state.t); const av=meta.v(a), bv=b?meta.v(b):null; const dl=delta(meta.u,av,bv,meta.dir); return {k,l,av,bv,dl}; }).filter(Boolean);
+    rows.sort((x,y)=> additive? Math.abs(y.av)-Math.abs(x.av) : y.av-x.av);
+    h+=`<div class="h4">Split</div><div class="splits">${dims.map(([k,l])=>`<button data-sd="${k}" class="${k===splitDim?'on':''}">${l}</button>`).join('')}</div>
+     <div class="tw"><table class="t"><thead><tr><th>${dims.find(d=>d[0]===splitDim)[1]}</th><th>Actual</th><th>${cmpLabel()}</th><th>Change</th></tr></thead><tbody>${rows.map(r=>`<tr class="click" data-lk="${r.k}"><td>${esc(r.l)}</td><td>${fv(meta.u,r.av).m}</td><td>${r.bv!=null?fv(meta.u,r.bv).m:'–'}</td><td><span class="dchip ${r.dl.cls}">${r.dl.txt.split(' ')[0]||'–'}</span></td></tr>`).join('')}
+     ${additive?`<tr class="total"><td>Total</td><td>${fv(meta.u,meta.v(S)).m}</td><td>${C?fv(meta.u,meta.v(C)).m:'–'}</td><td></td></tr>`:''}</tbody></table></div><div style="color:var(--mute);font-size:12.5px;margin-top:6px">${additive?'Parts add up to the total.':'Ratios are worked out from each part’s own totals, so they do not add up.'} Click a row to filter the whole tree.</div>`; }
+  $('#dBody').innerHTML=h; $('#drawer').classList.add('open'); $('#scrim').classList.add('on');
+  $('#dBody').querySelectorAll('[data-sd]').forEach(b=>b.onclick=()=>{ splitDim=b.dataset.sd; openNode(id); });
+  $('#dBody').querySelectorAll('[data-lk]').forEach(tr=>tr.onclick=()=>{ const k=tr.dataset.lk; state.L[splitDim]=k; if(splitDim==='park') state.L.region=PARK_BY[k].r; closeDrawer(); state.view='tree'; renderAll(); });
+  document.querySelectorAll('.node.sel').forEach(n=>n.classList.remove('sel')); document.querySelectorAll(`.node[data-node="${id}"]`).forEach(n=>n.classList.add('sel')); }
+function closeDrawer(){ $('#drawer').classList.remove('open'); $('#scrim').classList.remove('on'); state.sel=null; document.querySelectorAll('.node.sel').forEach(n=>n.classList.remove('sel')); }
+function readFor(id,meta,S,C){ if(!C) return 'No comparison figures for this month.';
+  const a=meta.v(S), b=meta.v(C); const dl=delta(meta.u,a,b,meta.dir); const word = dl.cls==='flat'? 'In line with' : (dl.cls==='good'?'Better than':'Worse than');
+  let s=`<b>${word} ${cmpLabel().toLowerCase()}</b> (${dl.txt||'no change'}). `;
+  if(['ebitda','pat','pbt'].includes(id) && S.valid.co){ const br=bridge(state.L,state.t,state.cmp,state.treeSc); if(br){ const top=br.steps.slice().sort((x,y)=>Math.abs(y.v)-Math.abs(x.v)).slice(0,3); s+=`Biggest moves in EBITDA: ${top.map(x=>`${x.l.toLowerCase()} ${x.v>=0?'+':MINUS}${num(Math.abs(x.v),1)}`).join(', ')}.`; if(id!=='ebitda') s+=` Depreciation and interest add ${num(-((S.da+S.fin)-(C.da+C.fin)),1)}.`; } return s; }
+  const dims=splitDims(meta); if(!dims.length) return s+'Company-level number, so there is no split below it.';
+  let by; if(!state.L.park) by=PARKS.filter(p=>parkMatch(p.k,state.L)).map(p=>({l:p.l,L2:{...state.L,park:p.k,region:p.r}}));
+  else if(meta.g==='row') by=SEGMENTS.filter(x=>!state.L.seg||x.k===state.L.seg).map(x=>({l:x.l,L2:{...state.L,seg:x.k}}));
+  else return s+'One park is selected, so there is nothing further to split.';
+  const parts=by.map(o=>{ const x=vals(o.L2,state.t,'actual',state.treeSc), y=state.treeSc?vals(o.L2,state.t,'actual'):cmpOf(o.L2,state.t); if(!x||!y||x.comp<1e-6) return null; return {l:o.l,d:meta.v(x)-meta.v(y),a:meta.v(x)}; }).filter(Boolean);
+  if(['cr','msf'].includes(meta.u)){ parts.sort((x,y)=>(x.d*meta.dir)-(y.d*meta.dir)); const worst=parts.slice(0,3).filter(x=>x.d*meta.dir<0);
+    if(worst.length) s+=`Largest drags: ${worst.map(x=>`${x.l} ${x.d>=0?'+':MINUS}${num(Math.abs(x.d),2)}`).join(', ')}.`; else s+='Nothing is behind.'; }
+  else { parts.sort((x,y)=>(x.a*meta.dir)-(y.a*meta.dir)); s+=`Weakest: ${parts.slice(0,3).map(x=>`${x.l} ${fv(meta.u,x.a).m}`).join(', ')}.`; }
+  return s; }
+
+// ---------- views ----------
+function viewTree(){ const tab=TABS[state.tab];
+  let h=lensNote();
+  if(state.treeSc) h+=`<div class="lens-note" style="background:var(--accent-soft);padding:10px 14px;border-radius:10px;color:var(--ink)">Showing a scenario: <b>${esc(state.presetName||'custom case')}</b>. Boxes show the case; the comparison is the base month. <button id="clrSc">Back to actuals</button></div>`;
+  h+=renderKPIs();
+  h+=`<div class="tabrow"><div class="tabs">${Object.entries(TABS).map(([k,t])=>`<button data-tab="${k}" class="${state.tab===k?'on':''}">${t.l}</button>`).join('')}</div>
+   <div class="legend"><span><i style="background:var(--flat-soft);border:1px solid var(--line)"></i>Within 3%</span><span><i style="background:var(--bad)"></i>Worse</span><span><i style="background:var(--good)"></i>Better</span><span><i style="border:1.5px dashed var(--accent);background:none"></i>Comes from the PAT tree</span></div></div>`;
+  h+=`<div class="panels">${tab.trees.map(treePanel).join('')}</div>`;
+  if(state.tab==='pat'){ const al=alertsFor(state.t).filter(a=>!a.closed).slice(0,5);
+    h+=`<div class="lower">${bridgeBox()}<div class="box"><div class="box-h"><div><h3>Latest alerts</h3><div class="sub">Against budget, ${MONTHS[state.t].label}</div></div><button class="btn" id="allAl">All alerts</button></div>${al.map(a=>`<div class="alert-li" data-al="${a.id}"><span class="dot ${a.status==='ack'?'amber':''}"></span><div><div class="tt">${esc(a.title)}</div><div class="tags"><span class="tag">${a.id}</span>${stTag(a)}</div></div>${impHTML(a)}</div>`).join('')}</div></div>`; }
+  return h; }
+function bindTreeView(){ const p=$('#page'); bindTree(p);
+  p.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ state.tab=b.dataset.tab; renderPage(); });
+  p.querySelectorAll('[data-bo]').forEach(b=>b.onclick=()=>{ state.bridgeOpen[b.dataset.bo]=!state.bridgeOpen[b.dataset.bo]; renderPage(); });
+  p.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{ state.alertSel=b.dataset.al; state.view='al'; renderAll(); window.scrollTo(0,0); });
+  const aa=$('#allAl'); if(aa) aa.onclick=()=>{ state.view='al'; renderAll(); };
+  const cl=$('#clrLens'); if(cl) cl.onclick=()=>{ state.L={format:null,region:null,park:null,seg:null}; renderAll(); };
+  const cs=$('#clrSc'); if(cs) cs.onclick=()=>{ state.treeSc=null; renderAll(); };
+  TABS[state.tab].trees.forEach(applyZoom); }
+
+// scenarios
+const LEVERS=[
+ {k:'lag',l:'Leased space starts paying sooner',min:0,max:.6,step:.01,f:v=>`${num(v*100,0)}% of the waiting space`,p:'Share of leased, not-yet-paying space brought to first rent this month.'},
+ {k:'bill',l:'More of the rent owed is billed',min:0,max:.03,step:.001,f:v=>`+${num(v*100,1)} pts`,p:'Points added to the share of rent billed, capped at 99.9% per park.'},
+ {k:'occ',l:'Occupancy',min:0,max:.03,step:.001,f:v=>`+${num(v*100,1)} pts`,p:'Points of committed occupancy added at every park, capped at 100%.'},
+ {k:'rent',l:'Rent per sq ft',min:0,max:.05,step:.001,f:v=>`+${num(v*100,1)}%`,p:'Higher rent on all billed space, for example from re-leasing at market.'},
+ {k:'late',l:'Late buildings handed over',min:0,max:1,step:.05,f:v=>`${num(v*100,0)}%`,p:'Share of the space running late that is finished and rented this month.'},
+ {k:'rate',l:'Interest rate',min:-100,max:100,step:5,f:v=>`${v>0?'+':v<0?MINUS:''}${Math.abs(v)} bps`,p:'Change in the average rate on Horizon’s debt (about 8.2% today).'}];
+const PRESETS=[
+ {k:'p1',l:'Lease faster',d:'Space starts paying about a month sooner on average.',sc:{lag:.22},deck:'Board deck: about ₹16 cr a year'},
+ {k:'p2',l:'Bill every rupee owed',d:'One more point of the rent owed is billed.',sc:{bill:.01},deck:'Board deck: about ₹9.7 cr a year per 1% of signed rent'},
+ {k:'p3',l:'One point fuller',d:'Committed occupancy up one point at every park.',sc:{occ:.01},deck:'Board deck: about ₹9.4 cr a year'},
+ {k:'p4',l:'Build on time',d:'Late blocks at Oragadam, Dobbaspet I and Bilaspur finished and rented.',sc:{late:1},deck:'Board deck: ₹2.75 cr a month per 1M sq ft late'},
+ {k:'p5',l:'All three systems',d:'Lease faster, bill every rupee and build on time together.',sc:{lag:.22,bill:.01,late:1},deck:'The case the board deck makes'}];
+function scObj(){ const s={}; for(const [k,v] of Object.entries(state.sc)) if(v) s[k]=v; return Object.keys(s).length? s : null; }
+function viewSc(){ const sc=scObj(); const t=state.t; const B=vals({},t,'actual'), X=vals({},t,'actual',sc)||B;
+  const card=(l,a,b,u,dir,extra)=>{ const dl=delta(u,a,b,dir); return `<div class="res"><div class="t">${l}</div><div class="v">${fvs(u,a)}</div><div class="d ${dl.cls}-t">${sc?(dl.txt||'no change')+' vs base':'Base '+fvs(u,b)}</div>${extra?`<div style="color:var(--mute);font-size:12.5px">${extra}</div>`:''}</div>`; };
+  const dE=(X.ebitda-B.ebitda);
+  const rows=[['rev','Revenue'],['billed','Billed space'],['rent','Rent per sq ft'],['real','Share of rent billed'],['noi','Park NOI'],['ebitda','EBITDA'],['pat','PAT'],['fcf','Free cash flow'],['icov','Interest cover']];
+  const preset=PRESETS.find(p=>p.k===state.preset);
+  return `<div class="ph"><h2>Scenarios</h2><p>Move a lever and the whole tree reruns for ${MONTHS[t].label}, money in crore. The base data never changes.</p></div>
+   <div class="presets">${PRESETS.map(p=>`<button class="preset ${state.preset===p.k?'on':''}" data-ps="${p.k}"><b>${p.l}</b><span>${p.d}</span></button>`).join('')}</div>
+   <div class="sc-grid"><div class="box"><div class="box-h"><h3>Levers</h3><button class="btn" id="scReset">Clear</button></div>${LEVERS.map(l=>`<div class="lever"><div class="lh"><label for="lv-${l.k}">${l.l}</label><span id="lvv-${l.k}">${l.f(state.sc[l.k])}</span></div><p>${l.p}</p><input type="range" id="lv-${l.k}" data-lv="${l.k}" min="${l.min}" max="${l.max}" step="${l.step}" value="${state.sc[l.k]}"></div>`).join('')}</div>
+   <div class="box"><div class="box-h"><div><h3>${preset?esc(preset.l):sc?'Your case':'Start a case'}</h3><div class="sub">${sc?'Case against the actual month':'Pick a preset above or move a lever. PAT, cash and EPS update as you go.'}</div></div>${sc?'<button class="btn pri" id="scShow">Show on the tree</button>':''}</div>
+    <div class="res-cards">${card('PAT this month',X.pat,B.pat,'cr',1)}${card('EBITDA this month',X.ebitda,B.ebitda,'cr',1)}${card('EBITDA a year at this rate',X.ebitda*12,B.ebitda*12,'cr',1,sc?`Worth ${dE>=0?'+':MINUS}${rs(Math.abs(dE*12),1)} cr a year`:'')}${card('Free cash flow this month',X.fcf,B.fcf,'cr',1)}</div>
+    <div class="tw"><table class="t"><thead><tr><th>Box</th><th>Base</th><th>Case</th><th>Change</th></tr></thead><tbody>${rows.map(([id,l])=>{ const m=N[id]; const a=m.v(X), b=m.v(B); const dl=delta(m.u,a,b,m.dir); return `<tr class="click" data-on="${id}"><td>${l}</td><td>${fv(m.u,b).m}</td><td>${fv(m.u,a).m}</td><td><span class="dchip ${dl.cls}">${dl.txt.split(' ')[0]||'–'}</span></td></tr>`; }).join('')}</tbody></table></div>
+    ${preset?`<div class="deck-note">${esc(preset.deck)}. The engine’s figure uses this month’s billed space, so it can differ from the deck’s estimate on signed rent.</div>`:''}
+    ${sc && X.pat>0 && B.pat<0?`<div class="read" style="margin-top:12px"><b>PAT turns positive</b> in this case: ${rs(X.pat,1)} cr against ${rs(B.pat,1)} cr.</div>`:''}</div></div>`; }
+function bindSc(){ const p=$('#page');
+  p.querySelectorAll('[data-ps]').forEach(b=>b.onclick=()=>{ const pr=PRESETS.find(x=>x.k===b.dataset.ps); state.sc={lag:0,bill:0,rent:0,occ:0,late:0,rate:0,...pr.sc}; state.preset=pr.k; renderPage(); });
+  p.querySelectorAll('[data-lv]').forEach(inp=>{ inp.oninput=()=>{ state.sc[inp.dataset.lv]=+inp.value; state.preset=null; $('#lvv-'+inp.dataset.lv).textContent=LEVERS.find(l=>l.k===inp.dataset.lv).f(+inp.value); };
+    inp.onchange=()=>{ const y=window.scrollY; renderPage(); window.scrollTo(0,y); }; });
+  const r=$('#scReset'); if(r) r.onclick=()=>{ state.sc={lag:0,bill:0,rent:0,occ:0,late:0,rate:0}; state.preset=null; renderPage(); };
+  const s=$('#scShow'); if(s) s.onclick=()=>{ state.treeSc=scObj(); state.presetName=(PRESETS.find(x=>x.k===state.preset)||{}).l; state.L={format:null,region:null,park:null,seg:null}; state.view='tree'; state.tab='pat'; renderAll(); window.scrollTo(0,0); };
+  p.querySelectorAll('[data-on]').forEach(tr=>tr.onclick=()=>openNode(tr.dataset.on)); }
+
+// reports
+const REPORTS=[
+ {id:'R01',l:'CEO one pager',d:'Headline numbers, PAT, free cash flow and the three biggest drivers',to:'CEO, Board',when:'Monthly, working day 3',freq:'Monthly',st:'rev',r:'ceo'},
+ {id:'R02',l:'Company P&L vs budget and last year',d:'PAT down to rent and space, every box of the PAT tree',to:'CFO',when:'Monthly, working day 3',freq:'Monthly',st:'draft',r:'pl'},
+ {id:'R03',l:'Park P&L',d:'Revenue, running cost, NOI and yield on cost for every park',to:'Head, Asset management; park heads',when:'Monthly, working day 3',freq:'Monthly',st:'draft',r:'park'},
+ {id:'R04',l:'EBITDA bridge',d:'Budget to actual, by step and by park',to:'CEO, CFO',when:'Monthly, working day 3',freq:'Monthly',st:'rev',r:'bridge'},
+ {id:'R05',l:'Rent owed vs rent billed',d:'For each park: rent the leases say is owed, rent billed, the gap',to:'Head, Billing; CFO',when:'Weekly, Monday',freq:'Weekly',st:'sent',r:'bill'},
+ {id:'R06',l:'Leasing and lease-up',d:'Occupancy, leased space not yet paying and rent waiting, by park',to:'Head, Leasing; sales team',when:'Weekly, Monday',freq:'Weekly',st:'sent',r:'lease'},
+ {id:'R07',l:'Construction and delivery',d:'Space planned, finished and late, with rent lost, by park',to:'Head, Projects; CEO',when:'Monthly, working day 2',freq:'Monthly',st:'rev',r:'deliv'},
+ {id:'R08',l:'Cash, debt and investor strip',d:'Cash tree, net debt, interest cover and EPS for the quarter pack',to:'CFO, Investor relations',when:'Quarterly, day 10',freq:'Quarterly',st:'draft',r:'cash'}];
+const ST={rev:['In review','rev'],draft:['Draft',''],sent:['Sent','closed']};
+function viewRp(){ const f=state.rpFilter; const list=REPORTS.filter(r=>f==='all'||r.freq===f); const nm=MONTHS[state.t].label;
+  return `<div class="rp-top"><div class="ph" style="margin:0"><h2>Reports</h2><p>Every report reads the same tree, so the numbers always match. The ${nm} pack is going out.</p></div></div>
+   <div class="rp-top"><div><b>${REPORTS.length} reports.</b> <span style="color:var(--mute)">This cycle: 2 sent, 3 in review, 3 in draft.</span></div><div class="pill-f">${['all','Monthly','Weekly','Quarterly'].map(k=>`<button data-rf="${k}" class="${f===k?'on':''}">${k==='all'?'All':k}</button>`).join('')}</div></div>
+   <div class="rp-grid">${list.map(r=>`<button class="rp" data-rp="${r.id}"><div class="id">${r.id}<span class="tag ${ST[r.st][1]}">${ST[r.st][0]}</span></div><h4>${r.l}</h4><p>${r.d}</p><dl><dt>Goes to</dt><dt>When</dt><dd>${r.to}</dd><dd>${r.when}</dd></dl></button>`).join('')}</div>`; }
+function tableHTML(head,rows,total){ return `<div class="tw"><table class="t"><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}${total?`<tr class="total">${total.map(c=>`<td>${c}</td>`).join('')}</tr>`:''}</tbody></table></div>`; }
+function renderReport(r){ const t=state.t, S=vals({},t,'actual'), B=vals({},t,'budget'), LY=t>=12?vals({},t-12,'actual'):null; let body='';
+  const d=(u,a,b,dir)=>{ const x=delta(u,a,b,dir); return `<span class="dchip ${x.cls}">${x.txt.split(' ')[0]||'–'}</span>`; };
+  if(r.r==='ceo'){ const br=bridge({},t,'budget'); const top=br.steps.slice().sort((x,y)=>Math.abs(y.v)-Math.abs(x.v)).slice(0,3);
+    body=`<div class="mini-kpis"><div><span>Revenue</span><b>${rs(S.rev,1)} cr</b></div><div><span>EBITDA margin</span><b>${num(S.margin*100,1)}%</b></div><div><span>PAT</span><b>${rs(S.pat,1)} cr</b></div><div><span>Free cash flow</span><b>${rs(S.fcf,1)} cr</b></div></div>
+     <p><b>PAT was ${rs(S.pat,1)} cr against ${rs(B.pat,1)} cr budget.</b> EBITDA was ${rs(S.ebitda,1)} cr, ${rs(B.ebitda-S.ebitda,1)} cr short. The three biggest reasons:</p>
+     ${tableHTML(['Driver','Effect on EBITDA, ₹ cr','Owner'],top.map(x=>[x.l,`${x.v>=0?'+':MINUS}${num(Math.abs(x.v),2)}`,({area:'Head, Projects',lag:'Head, Leasing',occ:'Head, Leasing',bill:'Head, Billing',rent:'Head, Leasing',svc:'Head, Facility services',popex:'Park heads',oi:'Treasurer',ovh:'CFO'})[x.k]]))}
+     <p style="margin-top:14px">Committed occupancy ${num(S.occ*100,1)}%, rent ${rs(S.rent,1)} per sq ft a month, ${num(S.real*100,1)}% of rent owed billed. Net debt ${rs(S.netDebt,0)} cr; interest cover ${num(S.icov,2)}x.</p>`; }
+  else if(r.r==='pl'){ const ids=['rev','rental','svc','popex','noi','oi','ovh','ebitda','da','fin','pbt','tax','pat'];
+    body=tableHTML(['₹ crore','Actual','Budget','vs budget','Last year','vs last year'],ids.map(id=>{ const m=N[id]; return [m.l,num(m.v(S),1),num(m.v(B),1),d(m.u,m.v(S),m.v(B),m.dir),LY?num(m.v(LY),1):'–',LY?d(m.u,m.v(S),m.v(LY),m.dir):'–']; })); }
+  else if(r.r==='park'){ const rows=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'), b=vals({park:p.k},t,'budget'); return [p.l,num(a.rev,2),num(a.popex,2),num(a.noi,2),num(b.noi,2),d('cr',a.noi,b.noi,1),num(a.yoc*100,1)+'%']; });
+    body=tableHTML(['Park','Revenue','Running cost','NOI','Budget NOI','vs budget','Yield on cost'],rows,['Total',num(S.rev,2),num(S.popex,2),num(S.noi,2),num(B.noi,2),d('cr',S.noi,B.noi,1),num(S.yoc*100,1)+'%']); }
+  else if(r.r==='bridge'){ const br=bridge({},t,'budget'); body=tableHTML(['Step','Effect, ₹ cr','Largest parks'],br.steps.map(s=>[s.l,`${s.v>=0?'+':MINUS}${num(Math.abs(s.v),2)}`,Object.entries(s.by).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1])).slice(0,3).map(([p,v])=>`${PARK_L[p]} ${v>=0?'+':MINUS}${num(Math.abs(v),2)}`).join(', ')||'Company level']),['Budget to actual',`${br.a-br.b>=0?'+':MINUS}${num(Math.abs(br.a-br.b),2)}`,`${num(br.b,2)} to ${num(br.a,2)}`]); }
+  else if(r.r==='bill'){ const rows=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'); return {p,a}; }).sort((x,y)=>(y.a.owed-y.a.rental)-(x.a.owed-x.a.rental));
+    body=tableHTML(['Park','Rent owed','Rent billed','Not billed','Share billed'],rows.map(({p,a})=>[p.l,num(a.owed,2),num(a.rental,2),num(a.owed-a.rental,2),num(a.real*100,1)+'%']),['Total',num(S.owed,2),num(S.rental,2),num(S.owed-S.rental,2),num(S.real*100,1)+'%']); }
+  else if(r.r==='lease'){ const rows=PARKS.map(p=>{ const a=vals({park:p.k},t,'actual'), b=vals({park:p.k},t,'budget'); return [p.l,num(a.comp,2),num(a.occ*100,1)+'%',num(a.np,2),num(b.np,2),num(a.np*a.rent/10,2)]; });
+    body=tableHTML(['Park','Finished, M sq ft','Committed','Not yet paying','Plan','Rent waiting, ₹ cr a month'],rows,['Total',num(S.comp,2),num(S.occ*100,1)+'%',num(S.np,2),num(B.np,2),num(S.np*S.rent/10,2)]); }
+  else if(r.r==='deliv'){ const rows=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).filter(x=>x.a.planYTD>0);
+    body=tableHTML(['Park','Planned YTD','Finished YTD','Running late','Days late','Rent lost, ₹ cr a month','Spend vs budget'],rows.map(({p,a})=>{ const b=vals({park:p.k},t,'budget'); return [p.l,num(a.planYTD,2),num(a.delYTD,2),num(a.lateA,2),num(a.daysLate,0),num(a.rentLost,2),d('cr',a.capex,b.capex,1)]; }),['Total',num(S.planYTD,2),num(S.delYTD,2),num(S.lateA,2),num(S.daysLate,0),num(S.rentLost,2),'']); }
+  else if(r.r==='cash'){ const ids=['ebitda','tax','wcChg','cfo','capex','fin','fcf','netDebt','dd','icov','nde','eps'];
+    body=tableHTML(['','Actual','Budget','vs budget'],ids.map(id=>{ const m=N[id]; return [id==='fin'?'Interest paid':id==='tax'?'Tax paid':m.l,fv(m.u,m.v(S)).m,fv(m.u,m.v(B)).m,d(m.u,m.v(S),m.v(B),m.dir)]; })); }
+  $('#sheet').innerHTML=`<button class="x" id="mClose" aria-label="Close">×</button><div style="color:var(--mute);font-weight:600">${r.id}</div><h3>${r.l}</h3><div class="sub">${MONTHS[t].label}, whole company. Goes to ${r.to}. ${r.when}.</div>${body}`;
+  $('#modal').classList.add('on'); $('#mClose').onclick=()=>$('#modal').classList.remove('on'); }
+function bindRp(){ const p=$('#page'); p.querySelectorAll('[data-rf]').forEach(b=>b.onclick=()=>{ state.rpFilter=b.dataset.rf; renderPage(); });
+  p.querySelectorAll('[data-rp]').forEach(b=>b.onclick=()=>renderReport(REPORTS.find(r=>r.id===b.dataset.rp))); }
+
+// ask
+const QUESTIONS=['Why did PAT miss budget this month?','Which parks hurt revenue most?','How much rent did we not bill?','How much leased space is not paying yet?','Where did the cash go this month?','How is Oragadam doing?','What is going well?','How are we doing against last year?','When does Horizon turn a profit?'];
+const chip=(id,l)=>`<span class="ref-chip" data-on="${id}">${esc(l||N[id].l)}</span>`;
+function answer(q){ const t=state.t, S=vals({},t,'actual'), B=vals({},t,'budget'), m=MONTHS[t].label; const ql=q.toLowerCase();
+  const park=PARKS.find(p=>ql.includes(p.l.toLowerCase().split(/[ ,(]/)[0].toLowerCase()) && p.k!=='oth');
+  if(park){ const a=vals({park:park.k},t,'actual'), b=vals({park:park.k},t,'budget');
+    return `<p><b>${park.l}</b> (${park.r}) in ${m}: ${chip('noi','Park NOI')} ${rs(a.noi,2)} cr against ${rs(b.noi,2)} cr budget, on ${rs(a.rev,2)} cr revenue.</p><p>${num(a.comp,2)}M sq ft finished, ${chip('occ')} ${num(a.occ*100,1)}%, ${chip('rent')} ${rs(a.rent,1)}, ${chip('real')} ${num(a.real*100,1)}%. ${a.np>0.05?`${num(a.np,2)}M sq ft is leased but not yet paying.`:''} ${a.lateA>0?`${num(a.lateA,2)}M sq ft is running ${num(a.daysLate,0)} days late, costing ${rs(a.rentLost,2)} cr of rent a month.`:''} Yield on cost ${num(a.yoc*100,1)}%.</p>`; }
+  if(/bill|leak|owed/.test(ql)){ const rows=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>(y.a.owed-y.a.rental)-(x.a.owed-x.a.rental)).slice(0,3);
+    return `<p>In ${m} the leases said ${rs(S.owed,1)} cr of rent was owed and ${rs(S.rental,1)} cr was billed: ${rs(S.owed-S.rental,2)} cr not billed, ${chip('real')} ${num(S.real*100,1)}% against a 99.7% plan.</p><p>Largest gaps: ${rows.map(x=>`${x.p.l} ${rs(x.a.owed-x.a.rental,2)} cr (${num(x.a.real*100,1)}%)`).join(', ')}. Each point of rent billed is worth about ${rs(S.owed*.01,2)} cr a month.</p>`; }
+  if(/not pay|lease-up|fit|waiting|lease faster|leased space/.test(ql)){ const rows=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>y.a.np-x.a.np).slice(0,3);
+    return `<p>${chip('np')} is ${num(S.np,2)}M sq ft against ${num(B.np,2)}M in the plan. At today’s rent that is ${rs(S.np*S.rent/10,2)} cr of rent a month waiting to start.</p><p>Most of it is at ${rows.map(x=>`${x.p.l} (${num(x.a.np,2)}M)`).join(', ')}: new blocks still in fit-out or rent-free.</p>`; }
+  if(/cash|fcf|debt/.test(ql)){ return `<p>${chip('fcf')} was ${rs(S.fcf,1)} cr in ${m}. ${chip('cfo')} brought in ${rs(S.cfo,1)} cr; ${chip('capex')} used ${rs(S.capex,1)} cr and interest ${rs(S.fin,1)} cr.</p><p>${chip('dd')} are ${num(S.dd,0)} against ${num(B.dd,0)} planned, which held up about ${rs((S.dd-B.dd)/30*S.rev,1)} cr. ${chip('netDebt')} is ${rs(S.netDebt,0)} cr.</p>`; }
+  if(/well|good|better|positive|last year|yoy|year ago/.test(ql) && t<12) return `<p>Last year’s figures start in April 2025, so pick a month from April 2026 to compare with last year.</p>`;
+  if(/well|good|better|positive/.test(ql)){ const br=bridge({},t,'ly'); const ups=br?br.steps.filter(s=>s.v>0).sort((a,b)=>b.v-a.v).slice(0,3):[];
+    return `<p>Against last year, revenue is up ${num((S.rev/(br?vals({},t-12,'actual').rev:S.rev)-1)*100,0)}%. The biggest contributors: ${ups.map(s=>`${s.l.toLowerCase()} +${rs(s.v,1)} cr`).join(', ')}.</p><p>EBITDA margin is ${num(S.margin*100,1)}%, and ${PARKS.filter(p=>vals({park:p.k},t,'actual').occ>.99).length} parks are fully let. Rent per sq ft is up ${num((S.rent/vals({},t-12,'actual').rent-1)*100,1)}% on a year ago, in line with contract escalations.</p>`; }
+  if(/last year|yoy|year ago/.test(ql)){ const L=vals({},t-12,'actual'); return `<p>Against ${MONTHS[t-12].label}: ${chip('rev')} ${rs(S.rev,1)} cr vs ${rs(L.rev,1)} cr (+${num((S.rev/L.rev-1)*100,0)}%). ${chip('comp')} ${num(S.comp,1)}M vs ${num(L.comp,1)}M sq ft. ${chip('ebitda')} ${rs(S.ebitda,1)} cr vs ${rs(L.ebitda,1)} cr. ${chip('pat')} ${rs(S.pat,1)} cr vs ${rs(L.pat,1)} cr, mostly because interest fell after the IPO.</p>`; }
+  if(/profit|break|turn/.test(ql)){ const X=vals({},t,'actual',{lag:.22,bill:.01,late:1}); return `<p>${chip('pat')} was ${rs(S.pat,1)} cr in ${m}, against ${rs(B.pat,1)} cr budget. It has been close to zero since the IPO cut interest; ${chip('icov')} is ${num(S.icov,2)}x.</p><p>The three systems in the board deck would have taken this month to about ${rs(X.pat,1)} cr: leasing faster, billing every rupee owed and finishing late blocks. Try it on the Scenarios page.</p>`; }
+  if(/revenue|hurt|park|worst/.test(ql)){ const rows=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual').rev,b:vals({park:p.k},t,'budget').rev})).sort((x,y)=>(x.a-x.b)-(y.a-y.b)).slice(0,4);
+    return `<p>${chip('rev')} was ${rs(S.rev,1)} cr against ${rs(B.rev,1)} cr budget. The parks furthest behind: ${rows.map(x=>`${x.p.l} ${MINUS}${rs(x.b-x.a,2)} cr`).join(', ')}.</p><p>Oragadam, Dobbaspet I and Bilaspur are behind mainly on late blocks and space not yet paying; Farukhnagar I and Luhari on rent not billed and occupancy.</p>`; }
+  if(/pat|budget|miss|ebitda|why/.test(ql)){ const br=bridge({},t,'budget'); const st=br.steps.slice().sort((a,b)=>a.v-b.v);
+    return `<p>${chip('pat')} was ${rs(S.pat,1)} cr against ${rs(B.pat,1)} cr budget, ${MINUS}${rs(B.pat-S.pat,1)} cr. Almost all of it is ${chip('ebitda')}, ${MINUS}${rs(B.ebitda-S.ebitda,1)} cr.</p><p>The EBITDA gap by step: ${st.filter(s=>Math.abs(s.v)>.05).map(s=>`${s.l.toLowerCase()} ${s.v>=0?'+':MINUS}${num(Math.abs(s.v),2)}`).join(', ')}. Depreciation and interest together are ${rs((S.da+S.fin)-(B.da+B.fin),1)} cr over budget.</p>`; }
+  if(/late|delay|construct|build/.test(ql)){ return `<p>${chip('lateA')} is ${num(S.lateA,2)}M sq ft, on average ${num(S.daysLate,0)} days behind. ${chip('rentLost')} ${rs(S.rentLost,2)} cr this month.</p>`; }
+  if(/occup|vacan|empty/.test(ql)){ const w=PARKS.map(p=>({p,a:vals({park:p.k},t,'actual')})).sort((x,y)=>x.a.occ-y.a.occ).slice(0,3); return `<p>${chip('occ')} is ${num(S.occ*100,1)}% across ${num(S.comp,1)}M sq ft. Lowest: ${w.map(x=>`${x.p.l} ${num(x.a.occ*100,0)}%`).join(', ')}.</p>`; }
+  return `<p>I can answer questions about the numbers in the tree: profit, revenue, rent, billing, occupancy, leased space not yet paying, late buildings, cash and debt, for the whole company or any park. Try one of the suggested questions.</p>`; }
+function viewAsk(){ const m=MONTHS[state.t].label;
+  return `<div class="ask"><div class="ph"><h2>Talk to data</h2><p>Answers come from the value tree. Every number has a source; click it to open that box.</p></div>
+   ${state.convo.length?'':`<div style="color:var(--mute)">Try one of these questions about ${m}.</div><div class="qs">${QUESTIONS.map(q=>`<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`}
+   <div class="convo">${state.convo.map(c=>`<div class="q-b">${esc(c.q)}</div><div class="a-b">${c.a}</div>`).join('')}</div>
+   ${state.convo.length?`<div class="qs" style="margin-top:0">${QUESTIONS.filter(q=>!state.convo.find(c=>c.q===q)).slice(0,3).map(q=>`<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`:''}
+   <form class="ask-bar" id="askF"><input id="askI" placeholder="Ask about the numbers, for example: why did PAT miss budget?" aria-label="Question"><button class="btn pri" type="submit">Ask</button></form></div>`; }
+function bindAsk(){ const p=$('#page'); const go=q=>{ if(!q.trim()) return; state.convo.push({q,a:answer(q)}); renderPage(); const c=p.querySelectorAll('.a-b'); if(c.length) c[c.length-1].scrollIntoView({block:'center'}); };
+  p.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>go(b.dataset.q)); $('#askF').onsubmit=e=>{ e.preventDefault(); go($('#askI').value); };
+  p.querySelectorAll('[data-on]').forEach(c=>c.onclick=()=>{ state.L={format:null,region:null,park:null,seg:null}; openNode(c.dataset.on); }); }
+
+// alerts page
+const RULES=[['A1','Rent billed below 99% of rent owed','Share of rent billed, by park','Below 99% for the month','Head, Billing','Billing team, CFO'],['A2','Leased space not yet paying above plan','Leased, not yet paying','More than 10% above plan','Head, Leasing','Leasing team, CFO if above 25%'],['A3','Building running late against plan','Space running late, by park','Any block more than 30 days late','Head, Projects','Projects, CEO'],['A4','Park occupancy below 86%','Committed occupancy, by park','Below 86% for two months','Head, Leasing','Leasing team'],['A5','Debtor days above plan','Debtor days','More than 3 days above plan','Credit head','CFO'],['A6','Interest cover below 2.0x','EBITDA ÷ finance cost','Below 2.0x','Treasurer','CFO, Board audit committee']];
+function viewAl(){ const all=alertsFor(state.t); const f=state.alertFilter; const list=all.filter(a=>f==='all'||(f==='open'&&a.status==='open')||(f==='esc'&&a.status==='esc')||(f==='ack'&&a.status==='ack')||(f==='closed'&&a.status==='closed'));
+  const cnt=k=>all.filter(a=>a.status===k).length; if(!state.alertSel||!all.find(a=>a.id===state.alertSel)) state.alertSel=all[0]&&all[0].id; const sel=all.find(a=>a.id===state.alertSel);
+  let h=`<div class="al-top"><div class="ph"><h2>Alerts</h2><p>${MONTHS[state.t].label} against budget. Six rules watch the tree and the engine checks them each time the numbers change.</p></div><div class="counts"><div><b class="bad-t">${cnt('open')}</b><span>Open</span></div><div><b style="color:var(--accent)">${cnt('esc')}</b><span>Escalated</span></div><div><b>${cnt('ack')}</b><span>Acknowledged</span></div><div><b class="good-t">${cnt('closed')}</b><span>Closed</span></div></div></div>
+   <div class="subtabs"><button data-at="feed" class="${state.alertTab==='feed'?'on':''}">Feed and tracker</button><button data-at="rules" class="${state.alertTab==='rules'?'on':''}">Rules and limits</button></div>`;
+  if(state.alertTab==='rules') return h+`<div class="box">${tableHTML(['Rule','Watches','Limit','Owner','Tells'],RULES.map(r=>[`<b>${r[0]}</b> ${r[1]}`,r[2],r[3],r[4],r[5]]))}<div class="deck-note">Limits are proposals to agree with Horizon’s finance team.</div></div>`;
+  h+=`<div class="pill-f">${[['all','All'],['open','Open'],['esc','Escalated'],['ack','Acknowledged'],['closed','Closed']].map(([k,l])=>`<button data-af="${k}" class="${f===k?'on':''}">${l}</button>`).join('')}</div>
+   <div class="al-grid"><div>${list.map(a=>`<div class="al-card ${a.id===state.alertSel?'on':''}" data-as="${a.id}" tabindex="0"><span class="dot ${a.status==='ack'?'amber':a.status==='closed'?'grey':''}"></span><div><div class="rule"><span class="tag" style="margin-right:8px">${a.id}</span>${esc(a.rule)}</div><div class="tt">${esc(a.title)}</div><div class="tags"><span style="color:var(--mute)">${esc(a.owner)}</span>${stTag(a)}</div></div>${impHTML(a)}</div>`).join('')||'<div class="empty">No alerts in this group.</div>'}</div>`;
+  if(sel) h+=`<div class="al-detail" style="border-top-color:${sel.status==='closed'?'var(--good)':sel.status==='ack'?'var(--amber)':'var(--bad)'}"><div class="tags"><span class="tag">${sel.id}</span><b>${esc(sel.rule)}</b><span style="color:var(--mute)">${MONTHS[state.t].label}</span></div><h3>${esc(sel.title)}</h3><div class="tags">${stTag(sel)}<span style="color:var(--mute)">Owner: ${esc(sel.owner)}</span></div>
+    <div class="sec">WHAT HAPPENED</div><div>${esc(sel.what)}</div><div class="sec">WHY</div><div style="color:var(--mute);font-size:13.5px">The drivers from the tree, largest gaps first. Click one to open it.</div>${sel.why.map(w=>`<div class="why-li" data-wn="${w.node}" data-wp="${w.park||''}"><div><b>${esc(w.l)}</b><span>${esc(w.dt)}</span></div><span style="color:var(--accent)">›</span></div>`).join('')}
+    <div class="sec">SO WHAT</div><div class="sowhat">${esc(sel.so)}</div></div>`;
+  return h+`</div>`; }
+function bindAl(){ const p=$('#page'); p.querySelectorAll('[data-at]').forEach(b=>b.onclick=()=>{ state.alertTab=b.dataset.at; renderPage(); });
+  p.querySelectorAll('[data-af]').forEach(b=>b.onclick=()=>{ state.alertFilter=b.dataset.af; renderPage(); });
+  p.querySelectorAll('[data-as]').forEach(b=>{ b.onclick=()=>{ state.alertSel=b.dataset.as; renderPage(); }; b.onkeydown=e=>{ if(e.key==='Enter') b.click(); }; });
+  p.querySelectorAll('[data-wn]').forEach(b=>b.onclick=()=>{ const pk=b.dataset.wp; state.L={format:null,region:pk?PARK_BY[pk].r:null,park:pk||null,seg:null}; renderFilters(); openNode(b.dataset.wn); }); }
+
+// ---------- render ----------
+function renderPage(){ const p=$('#page'); const v=state.view;
+  if(v==='tree'){ p.innerHTML=viewTree(); bindTreeView(); }
+  else if(v==='sc'){ p.innerHTML=viewSc(); bindSc(); }
+  else if(v==='rp'){ p.innerHTML=viewRp(); bindRp(); }
+  else if(v==='ask'){ p.innerHTML=viewAsk(); bindAsk(); }
+  else { p.innerHTML=viewAl(); bindAl(); }
+  p.querySelectorAll('.kpi[data-node]').forEach(k=>k.onclick=()=>openNode(k.dataset.node)); }
+function renderAll(){ renderNav(); renderFilters(); renderPage(); }
+$('#dClose').onclick=closeDrawer; $('#scrim').onclick=closeDrawer;
+$('#modal').onclick=e=>{ if(e.target.id==='modal') $('#modal').classList.remove('on'); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeDrawer(); $('#modal').classList.remove('on'); } });
+$('#resetBtn').onclick=()=>{ Object.assign(state,{view:'tree',t:LAST_ACTUAL,cmp:'budget',L:{format:null,region:null,park:null,seg:null},tab:'pat',collapsed:{billed:true,ovh:true},zoom:{},treeSc:null,sc:{lag:0,bill:0,rent:0,occ:0,late:0,rate:0},preset:null,convo:[]}); closeDrawer(); renderAll(); };
+let rz; window.addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(state.view==='tree') TABS[state.tab].trees.forEach(applyZoom); },120); });
+renderAll();
+
+</script>
+</body>
+</html>
